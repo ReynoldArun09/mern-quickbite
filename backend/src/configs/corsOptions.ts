@@ -1,4 +1,5 @@
-import { CorsOptions } from "cors";
+import { type CorsOptions } from "cors";
+import { ParsedEnvVariables } from "./appConfig";
 
 /**
  * CORS configuration options.
@@ -9,7 +10,7 @@ import { CorsOptions } from "cors";
  * - `optionsSuccessStatus`: The status code sent for successful preflight (OPTIONS) requests.
  */
 export const corsOptions: CorsOptions = {
-  origin: "http://localhost:5173",
+  origin: ParsedEnvVariables.CORS_ORIGIN,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: 204,

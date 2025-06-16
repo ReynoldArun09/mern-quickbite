@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { type Application } from "express";
 import helmet from "helmet";
 import { corsOptions } from "./configs";
+import { errorMiddleware } from "./middlewares";
 import { authRoutes } from "./routes";
 
 /** initialize express app */
@@ -18,5 +19,6 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRoutes);
 
 /** global error handling middlware */
+app.use(errorMiddleware);
 
 export default app;

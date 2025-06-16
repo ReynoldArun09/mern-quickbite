@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { type Application } from "express";
 import helmet from "helmet";
 import { corsOptions } from "./configs";
+import { authRoutes } from "./routes";
 
 /** initialize express app */
 const app: Application = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 /** Routes */
+app.use("/api/v1/auth", authRoutes);
 
 /** global error handling middlware */
 

@@ -35,7 +35,7 @@ export const signUpUserController = customAsyncWrapper(async (request: Request, 
  * - creates cookie and attach to http request.
  *
  * @param The request object containing user signin details.
- * @param The response objecct used to send Api response and attach cookie.
+ * @param The response object used to send Api response and attach cookie.
  *
  * @returns A Success message with 200 status code. when user is signed in
  * and returns user data to client with cookie.
@@ -56,6 +56,41 @@ export const signInUserController = customAsyncWrapper(async (req: Request, resp
     response,
     statusCode: HttpStatusCode.OK,
     message: ApiSuccessMessages.SIGN_IN_SUCCESS,
+    data: user,
+  });
+});
+
+/**
+ * signOutUserController function to handle user signout request.
+ * - clear cookie
+ *
+ * @returns A success message response indicating user has been signed out.
+ */
+export const signOutUserController = customAsyncWrapper(async (req: Request, response: Response) => {
+  response.clearCookie("accessToken");
+
+  sendApiResponse({
+    response,
+    statusCode: HttpStatusCode.OK,
+    message: ApiSuccessMessages.SIGN_OUT_SUCCESS,
+  });
+});
+
+/**
+ * verifyUserController function to handle user verification request.
+ * This function retrieves authenticated user from the request context
+ * and return the user data as response.
+ *
+ * @param req - The request object which contains the authenticated user data in its context.
+ * @param res - The response object which is used to send API response.
+ * @returns A Success response containing the authenticated user data
+ */
+export const verifyUserController = customAsyncWrapper(async (request: Request, response: Response) => {
+  const user = request.ctx;
+
+  sendApiResponse({
+    response,
+    statusCode: HttpStatusCode.OK,
     data: user,
   });
 });

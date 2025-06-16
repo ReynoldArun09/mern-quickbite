@@ -21,3 +21,16 @@ export type UserType = {
   role: string;
   blocked: boolean;
 };
+
+export type ProductType = {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string;
+  starRating: number;
+  available: boolean;
+  vegetarian: boolean;
+  discount: number;
+  ingredients: string[];
+};

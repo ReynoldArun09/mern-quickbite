@@ -23,7 +23,7 @@ export const errorMiddleware = (error: Error, req: Request, res: Response, next:
   if (error instanceof ZodError) {
     const errors = formatZodError(error);
     return res.status(HttpStatusCode.BAD_REQUEST).json({
-      message: "Validation Failed",
+      message: GlobalErrorMessages.VALIDATION_FAILED,
       errors: errors,
     });
   }

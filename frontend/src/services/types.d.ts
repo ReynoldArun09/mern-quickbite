@@ -1,13 +1,15 @@
-export type ResponseType = {
+export type GeneralResponseType = {
   message: string;
   success: boolean;
 };
 
-export type signupResponse = ResponseType;
-
 export type siginResponse = {
   data: UserType;
-} & ResponseType;
+} & GeneralResponseType;
+
+export type VerifyResponseType = {
+  data: UserType;
+} & Omit<GeneralResponseType, "message">;
 
 export type UserType = {
   email: string;

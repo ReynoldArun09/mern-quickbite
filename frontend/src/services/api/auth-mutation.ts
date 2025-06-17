@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { signInApi, signUpApi } from "./auth-api";
+import { signInApi, signOutApi, signUpApi } from "./auth-api";
 
 export function useSignUpMutation() {
   const navigate = useNavigate();
@@ -26,6 +26,19 @@ export function useSignInMutation() {
     onSuccess: (data) => {
       toast.success(data.message);
       navigate("/");
+    },
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
+}
+
+export function useSignOutMutation() {
+  return useMutation({
+    mutationKey: ["signout-key"],
+    mutationFn: signOutApi,
+    onSuccess: (data) => {
+      toast.success(data.message);
     },
     onError: (error) => {
       toast.error(error?.message);

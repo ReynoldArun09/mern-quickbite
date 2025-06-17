@@ -20,3 +20,8 @@ export const getNonVegProductsApi = async (): Promise<ProductType[]> => {
   const response = await axiosInstance.get("product/nonveg-products");
   return response.data.data;
 };
+
+export const searchProductsApi = async (searchTerm: string): Promise<ProductType[]> => {
+  const response = await axiosInstance.get(`product/search/${searchTerm}`);
+  return response.data.data;
+};

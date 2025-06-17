@@ -4,6 +4,7 @@ import {
   getNonVegProductsApi,
   getRecentlyAddedProductsApi,
   getVegProductsApi,
+  searchProductsApi,
 } from "./products-api";
 
 export function useGetAllProductsQuery() {
@@ -34,5 +35,13 @@ export function useGetRecentlyAddedProductsQuery() {
     queryKey: ["recently-products-key"],
     queryFn: getRecentlyAddedProductsApi,
     staleTime: Infinity,
+  });
+}
+
+export function useSearchProductsQuery(searchTerm: string) {
+  return useQuery({
+    queryKey: ["search-products-key", searchTerm],
+    queryFn: () => searchProductsApi(searchTerm),
+    enabled: !!searchTerm,
   });
 }

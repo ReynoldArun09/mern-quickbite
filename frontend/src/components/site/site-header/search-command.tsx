@@ -1,4 +1,6 @@
+import useDebounce from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
+import { useSearchProductsQuery } from "@/services/products/products-query";
 import { SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
@@ -7,7 +9,9 @@ import { Skeleton } from "../../ui/skeleton";
 
 export default function SearchCommand() {
   const [openCommand, setOpenCommand] = useState(false);
-  const loading = false;
+  const [query, setQuery] = useState("");
+  const debounceValue = useDebounce(query, 1000);
+  const { data: products, isLoading } = useSearchProductsQuery(debounceValue);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -39,12 +43,15 @@ export default function SearchCommand() {
         open={openCommand}
         onOpenChange={(open) => {
           setOpenCommand(open);
+          if (!open) {
+            setQuery("");
+          }
         }}
       >
-        <CommandInput />
+        <CommandInput placeholder="search food here.." value={query} onValueChange={setQuery} />
         <CommandList>
-          <CommandEmpty className={cn(loading ? "hidden" : "py-6 text-center text-sm")}>No result found</CommandEmpty>
-          {loading ? (
+          <CommandEmpty className={cn(isLoading ? "hidden" : "py-6 text-center text-sm")}>No result found</CommandEmpty>
+          {isLoading ? (
             <div className="space-y-1 overflow-hidden px-1 py-2">
               <Skeleton className="h-12 w-20 rounded-sm" />
               <Skeleton className="h-4 rounded-sm" />
@@ -52,13 +59,13 @@ export default function SearchCommand() {
             </div>
           ) : (
             <CommandGroup>
-              <CommandItem>
-                <div className="space-y-1 overflow-hidden px-1 py-2">
-                  <Skeleton className="h-12 w-20 rounded-sm" />
-                  <Skeleton className="h-4 rounded-sm" />
-                  <Skeleton className="h-4 rounded-sm" />
-                </div>
-              </CommandItem>
+              {products?.map((group) => (
+                <CommandItem key={group?.name} className="mr-20 flex h-fit justify-between" value={group.name}>
+                  <img src={group?.image} alt={group.name} className="h-12 w-20" />
+                  <span className="truncate font-bold">{group?.name}</span>
+                  <span className="text-primary font-bold">$ {group?.price}</span>
+                </CommandItem>
+              ))}
             </CommandGroup>
           )}
         </CommandList>

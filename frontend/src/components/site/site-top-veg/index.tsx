@@ -1,5 +1,5 @@
-import { dummyArray } from "../../../lib/utils";
-import { useGetVegProductsQuery } from "../../../services/products/products-query";
+import { dummyArray } from "@/lib/utils";
+import { useGetVegProductsQuery } from "@/services/products/products-query";
 import SiteProductCard from "../../common/site-product-card";
 import SiteProductSkeleton from "../../common/skeletons/site-product-skeleton";
 import { ComponentGridContainer, ComponentTitle, ComponentWrapper } from "../../common/typography";

@@ -1,9 +1,9 @@
 import { axiosInstance } from "../axios";
 import type { ProductType } from "../types";
 
-export const getAllProductsApi = async () => {
+export const getAllProductsApi = async (): Promise<ProductType[]> => {
   const response = await axiosInstance.get("product/all-products");
-  return response.data;
+  return response.data.data;
 };
 
 export const getRecentlyAddedProductsApi = async (): Promise<ProductType[]> => {

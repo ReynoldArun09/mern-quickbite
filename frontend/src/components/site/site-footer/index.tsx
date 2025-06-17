@@ -1,3 +1,11 @@
+import SiteBottomFooter from "./site-bottom-footer";
+import SiteTopFooter from "./site-top-footer";
+
 export default function SiteFooter() {
-  return <div>SiteFooter</div>;
+  return (
+    <footer className="mx-4 container sm:mx-auto">
+      <SiteTopFooter />
+      <SiteBottomFooter />
+    </footer>
+  );
 }

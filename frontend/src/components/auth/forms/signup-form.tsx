@@ -1,4 +1,4 @@
-import { useSignUpMutation } from "@/services/api/auth-mutation";
+import { useSignUpMutation } from "@/services/auth/auth-mutation";
 import { signUpSchema, type signUpSchemaType } from "@/validations/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

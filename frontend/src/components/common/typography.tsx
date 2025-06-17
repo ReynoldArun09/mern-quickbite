@@ -20,7 +20,7 @@ interface ComponentProps extends React.HTMLAttributes<HTMLElement> {
 
 const ComponentGridContainer = ({ children, className, as: Comp = "div", ...props }: ComponentProps) => {
   return (
-    <Comp className={cn("mt-8 grid grid-cols-[repeat(auto-fill, minmax(300px,1fr))] gap-8", className)} {...props}>
+    <Comp className={cn("mt-8 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8", className)} {...props}>
       {children}
     </Comp>
   );

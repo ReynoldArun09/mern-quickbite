@@ -1,6 +1,6 @@
 import type { signInSchemaType, signUpSchemaType } from "@/validations/auth-schema";
 import { axiosInstance } from "../axios";
-import type { GeneralResponseType, siginResponse, VerifyResponseType } from "../types";
+import type { GeneralResponseType, siginResponse } from "../types";
 
 export const signUpApi = async (values: signUpSchemaType): Promise<GeneralResponseType> => {
   const response = await axiosInstance.post("auth/signup", values);
@@ -12,7 +12,7 @@ export const signInApi = async (values: signInSchemaType): Promise<siginResponse
   return response.data;
 };
 
-export const verifyApi = async (): Promise<VerifyResponseType> => {
+export const verifyApi = async () => {
   const response = await axiosInstance.get("auth/verify");
   return response.data;
 };

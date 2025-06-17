@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useAuthQuery } from "../services/api/auth-query";
+import { useAuthQuery } from "../services/auth/auth-query";
 import type { UserType } from "../services/types";
 
 type AuthProviderProps = {

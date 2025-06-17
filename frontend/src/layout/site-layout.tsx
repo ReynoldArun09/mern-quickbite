@@ -6,7 +6,7 @@ export default function SiteLayout() {
   return (
     <>
       <SiteHeader />
-      <main className="container mx-auto h-screen">
+      <main className="container mx-auto">
         <Outlet />
       </main>
       <SiteFooter />

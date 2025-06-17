@@ -1,6 +1,6 @@
 import useAuth from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
-import { useSignOutMutation } from "@/services/api/auth-mutation";
+import { useSignOutMutation } from "@/services/auth/auth-mutation";
 import { CircleUser } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button, buttonVariants } from "../../ui/button";

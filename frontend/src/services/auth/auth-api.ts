@@ -11,3 +11,8 @@ export const signInApi = async (values: signInSchemaType): Promise<siginResponse
   const response = await axiosInstance.post("auth/signin", values);
   return response.data;
 };
+
+export const verifyApi = async () => {
+  const response = await axiosInstance.get("auth/verify");
+  return response.data;
+};

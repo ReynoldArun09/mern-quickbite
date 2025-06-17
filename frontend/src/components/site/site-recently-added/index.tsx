@@ -1,3 +1,10 @@
+import { ComponentGridContainer, ComponentTitle, ComponentWrapper } from "../../common/typography";
+
 export default function SiteRecentlyAdded() {
-  return <div>SiteRecentlyAdded</div>;
+  return (
+    <ComponentWrapper>
+      <ComponentTitle title="Recently Added Dishes" />
+      <ComponentGridContainer>product</ComponentGridContainer>
+    </ComponentWrapper>
+  );
 }

@@ -1,0 +1,40 @@
+services:
+  mongo-db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    container_name: quickbite-mongo
+    volumes:
+      - quickbite-mongo:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    container_name: quickbite-backend
+    restart: always
+    depends_on:
+      - mongo-db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    container_name: quickbite-backendd
+    restart: always
+    depends_on:
+      - backend
+      - mongo-db
+
+volumes:
+  quickbite-mongo:

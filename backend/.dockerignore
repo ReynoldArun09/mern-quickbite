@@ -1,4 +1,5 @@
-node_modules;
-dist.dockerignore;
-Dockerfile.dev;
-error.log;
+node_modules
+.env
+*log
+Dockerfile.dev
+.gitignore

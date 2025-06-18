@@ -3,11 +3,25 @@ import { ApiErrorMessages, HttpStatusCode } from "../constants";
 import { cartModel, productModel } from "../models";
 import { customError } from "../utils";
 
+/**
+ * getCartItemsForUserService function to handle get cartitems from database.
+ * - get cart items from database.
+ */
 export const getCartItemsForUserService = async (userId: Types.ObjectId) => {
   const cartItems = await cartModel.find({ orderBy: userId }).populate("products.product");
   return { cartItems };
 };
 
+/**
+ * createUserCartService function to handle create new cart in database and add product.
+ * - check if product exist in database.
+ * - check if cart exist in database.
+ * - if cart doesnt exist then new cart is created and product is added to it.
+ * - if cart already exist. get product index using findIndex.
+ * - update the count if product already exist or add item to the existing cart.
+ *
+ * @throws product not found in database.
+ */
 export const createUserCartservice = async (productId: string, count: number, userId: Types.ObjectId) => {
   const existingProduct = await productModel.findById(productId);
 
@@ -55,6 +69,14 @@ export const createUserCartservice = async (productId: string, count: number, us
   return { existingCart };
 };
 
+/**
+ * removeFromCartService function to handle remove product from database.
+ * - check if product exist in database.
+ * - check if cart exist in database.
+ * - get product index using findIndex and remove item using splice.
+ *
+ * @throws product not found in database if product doesnt exist and if also cart doesnt exist.
+ */
 export const removeFromCartService = async (productId: string, userId: Types.ObjectId) => {
   const existingProduct = await productModel.findById(productId);
 

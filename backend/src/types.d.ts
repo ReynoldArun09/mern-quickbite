@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 declare global {
   namespace Express {
     interface Request {
@@ -9,7 +7,7 @@ declare global {
 }
 
 export type UserContextType = Omit<UserType, "password"> & {
-  _id: mongoose.Types.ObjectId;
+  _id: ObjectId;
 };
 
 export type UserType = {
@@ -33,4 +31,16 @@ export type ProductType = {
   vegetarian: boolean;
   discount: number;
   ingredients: string[];
+};
+
+export type CartProduct = {
+  product: string;
+  count: number;
+  price: number;
+};
+
+export type CartModelType = {
+  products: CartProduct[];
+  cartTotal: number;
+  orderBy: Types.ObjectIdj;
 };

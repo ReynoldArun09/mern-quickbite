@@ -8,7 +8,7 @@ import { customError } from "../utils";
  * - get cart items from database.
  */
 export const getCartItemsForUserService = async (userId: Types.ObjectId) => {
-  const cartItems = await cartModel.find({ orderBy: userId }).populate("products.product");
+  const cartItems = await cartModel.findOne({ orderBy: userId }).populate("products.product");
   return { cartItems };
 };
 

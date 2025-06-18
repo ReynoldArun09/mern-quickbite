@@ -66,7 +66,7 @@ export const createUserCart = customAsyncWrapper(async (request: Request, respon
 export const removeFromCart = customAsyncWrapper(async (request: Request, response: Response) => {
   const ctx = request.ctx;
   const userId = ctx._id;
-  const productId = request.params;
+  const { productId } = request.params;
   await removeFromCartService(String(productId), userId);
 
   sendApiResponse({

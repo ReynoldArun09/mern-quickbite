@@ -1,4 +1,5 @@
 import type { ProductType } from "@/services/types";
+import { useAddToCartMutation } from "../../services/cart/cart-mutation";
 import { Button } from "../ui/button";
 import { Card, CardFooter, CardHeader } from "../ui/card";
 
@@ -7,6 +8,16 @@ interface SiteProductCardProps {
 }
 
 export default function SiteProductCard({ item }: SiteProductCardProps) {
+  const { isPending, mutate: addToCart } = useAddToCartMutation();
+
+  const handleAddToCart = () => {
+    if (isPending) return;
+    addToCart({
+      productId: item._id,
+      count: 1,
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -23,7 +34,9 @@ export default function SiteProductCard({ item }: SiteProductCardProps) {
         <p className="font-semibold underline uppercase">{item.category}</p>
       </CardFooter>
       <CardFooter>
-        <Button className="w-full">Add to cart</Button>
+        <Button className="w-full" onClick={handleAddToCart}>
+          Add to cart
+        </Button>
       </CardFooter>
     </Card>
   );

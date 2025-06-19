@@ -1,6 +1,11 @@
 import { type Request, type Response } from "express";
 import { HttpStatusCode } from "../constants";
-import { createUserCartservice, getCartItemsForUserService, removeFromCartService } from "../services/cartServices";
+import {
+  createUserCartservice,
+  getCartItemsForUserService,
+  removeFromCartService,
+  updateProductCountService,
+} from "../services/cartServices";
 import { customAsyncWrapper, sendApiResponse } from "../utils";
 import { cartSchema } from "../validations/cartSchema";
 
@@ -68,6 +73,19 @@ export const removeFromCart = customAsyncWrapper(async (request: Request, respon
   const userId = ctx._id;
   const { productId } = request.params;
   await removeFromCartService(String(productId), userId);
+
+  sendApiResponse({
+    response,
+    statusCode: HttpStatusCode.OK,
+  });
+});
+
+export const updateProductCount = customAsyncWrapper(async (request: Request, response: Response) => {
+  const ctx = request.ctx;
+  const userId = ctx._id;
+  const { productId, count } = cartSchema.parse(request.body);
+
+  await updateProductCountService(productId, count, userId);
 
   sendApiResponse({
     response,

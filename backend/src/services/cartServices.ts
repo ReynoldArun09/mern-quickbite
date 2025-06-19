@@ -62,7 +62,7 @@ export const createUserCartservice = async (productId: string, count: number, us
     });
   }
 
-  existingCart.cartTotal = existingCart.products.reduce((total, item) => total + item.count * productIndex, 0);
+  existingCart.cartTotal = existingCart.products.reduce((total, item) => total + item.count * item.price, 0);
 
   await existingCart.save();
 
@@ -93,8 +93,52 @@ export const removeFromCartService = async (productId: string, userId: Types.Obj
   const productIndex = existingCart.products.findIndex((item) => item.product.toString() === productId);
 
   if (productIndex !== -1) {
+    const existingCartItem = existingCart.products[productIndex];
+    const productCount = existingCartItem.count || 1;
     existingCart.products.splice(productIndex, 1);
-    existingCart.cartTotal -= existingProduct.price;
+    existingCart.cartTotal -= existingProduct.price * productCount;
+
+    if (existingCart.cartTotal < 0) {
+      existingCart.cartTotal = 0;
+    }
+
     await existingCart.save();
   }
+};
+
+export const updateProductCountService = async (productId: string, count: number, userId: Types.ObjectId) => {
+  const existingProduct = await productModel.findById(productId);
+
+  if (!existingProduct) {
+    throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
+  }
+
+  let existingCart = await cartModel.findOne({ orderBy: userId });
+
+  if (!existingCart) {
+    throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
+  }
+
+  const productIndex = existingCart.products.findIndex((item) => item.product.toString() === productId);
+
+  if (productIndex === -1) {
+    throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
+  }
+
+  const existingCartItem = existingCart.products[productIndex];
+  const oldCount = existingCartItem.count;
+
+  if (count === 0) {
+    existingCart.products.splice(productIndex, 1);
+    existingCart.cartTotal -= existingProduct.price * oldCount;
+  } else {
+    existingCart.products[productIndex].count = count;
+    existingCart.cartTotal -= existingProduct.price * oldCount;
+    existingCart.cartTotal += existingProduct.price * count;
+  }
+
+  await existingCart.save();
+  await existingCart.populate("products.product");
+
+  return { existingCart };
 };

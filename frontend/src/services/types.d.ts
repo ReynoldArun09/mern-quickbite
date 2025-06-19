@@ -22,6 +22,7 @@ export type UserType = {
 };
 
 export type ProductType = {
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -32,4 +33,22 @@ export type ProductType = {
   vegetarian: boolean;
   discount: number;
   ingredients: string[];
+};
+
+export type CartResponse = {
+  _id: string;
+  cartTotal: number;
+  orderBy: string;
+  products: CartProduct[];
+};
+
+export type CartProduct = {
+  product: ProductType;
+  count: number;
+  price: number;
+};
+
+export type CartPayload = {
+  count: number;
+  productId: string;
 };

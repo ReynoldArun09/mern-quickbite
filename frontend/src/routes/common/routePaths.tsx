@@ -1,3 +1,5 @@
+import PurchaseCancelPage from "@/pages/site/purchase-cancel";
+import PurchaseSuccessPage from "@/pages/site/purchase-success";
 import { lazy } from "react";
 import { AUTH_ROUTES, BASE_ROUTE, PROTECTED_ROUTES } from "./routes";
 
@@ -23,4 +25,6 @@ export const authenticationRoutePaths = [
 export const protectedRoutesPaths = [
   { path: PROTECTED_ROUTES.CART, element: <CartPage /> },
   { path: PROTECTED_ROUTES.CHECKOUT, element: <CheckoutPage /> },
+  { path: PROTECTED_ROUTES.PURCHASE_SUCCESS, element: <PurchaseSuccessPage /> },
+  { path: PROTECTED_ROUTES.PURCHASE_CANCEL, element: <PurchaseCancelPage /> },
 ];

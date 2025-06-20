@@ -4,7 +4,7 @@ import express, { type Application } from "express";
 import helmet from "helmet";
 import { corsOptions } from "./configs";
 import { errorMiddleware } from "./middlewares";
-import { authRoutes, cartRoutes, productRoutes } from "./routes";
+import { authRoutes, cartRoutes, paymentRoutes, productRoutes } from "./routes";
 
 /** initialize express app */
 const app: Application = express();
@@ -19,6 +19,7 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
+app.use("/api/v1/payment", paymentRoutes);
 
 /** global error handling middlware */
 app.use(errorMiddleware);

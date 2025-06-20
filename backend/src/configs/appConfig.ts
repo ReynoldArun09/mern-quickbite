@@ -15,6 +15,7 @@ const EnvVariables = z.object({
   CLOUDINARY_API_KEY: z.string().min(1, { message: ValidationMessages.CLOUDINARY_API_KEY_REQUIRED }),
   CLOUDINARY_API_SECRET: z.string().min(1, { message: ValidationMessages.CLOUDINARY_API_SECRET_REQUIRED }),
   SALT: z.string().min(2, { message: ValidationMessages.SALT_REQUIRED }),
+  STRIPE_KEY: z.string().min(2, { message: ValidationMessages.STRIPE_KEY_REQUIRED }),
 });
 
 type EnvVariablesType = z.infer<typeof EnvVariables>;

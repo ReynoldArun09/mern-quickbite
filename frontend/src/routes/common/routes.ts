@@ -12,4 +12,6 @@ export const AUTH_ROUTES = {
 export const PROTECTED_ROUTES = {
   CART: "/cart",
   CHECKOUT: "/checkout",
+  PURCHASE_SUCCESS: "/purchase-success",
+  PURCHASE_CANCEL: "/purchase-cancel",
 };

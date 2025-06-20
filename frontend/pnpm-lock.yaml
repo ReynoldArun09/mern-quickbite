@@ -32,6 +32,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.2.7
         version: 1.2.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@stripe/stripe-js':
+        specifier: ^7.3.1
+        version: 7.3.1
       '@tailwindcss/vite':
         specifier: ^4.1.10
         version: 4.1.10(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1))
@@ -1045,6 +1048,10 @@ packages:
 
   '@standard-schema/utils@0.3.0':
     resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
+
+  '@stripe/stripe-js@7.3.1':
+    resolution: {integrity: sha512-pTzb864TQWDRQBPLgSPFRoyjSDUqpCkbEgTzpsjiTjGz1Z5SxZNXJek28w1s6Dyry4CyW4/Izj5jHE/J9hCJYQ==}
+    engines: {node: '>=12.16'}
 
   '@tailwindcss/node@4.1.10':
     resolution: {integrity: sha512-2ACf1znY5fpRBwRhMgj9ZXvb2XZW8qs+oTfotJ2C5xR0/WNL7UHZ7zXl6s+rUqedL1mNi+0O+WQr5awGowS3PQ==}
@@ -3462,6 +3469,8 @@ snapshots:
     optional: true
 
   '@standard-schema/utils@0.3.0': {}
+
+  '@stripe/stripe-js@7.3.1': {}
 
   '@tailwindcss/node@4.1.10':
     dependencies:

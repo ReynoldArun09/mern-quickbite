@@ -18,6 +18,5 @@ export const removeFromCartApi = async (productId: string) => {
 
 export const updateProductCountApi = async (payload: CartPayload) => {
   const response = await axiosInstance.put(`cart/update-cart`, payload);
-  console.log(response);
   return response.data.data;
 };

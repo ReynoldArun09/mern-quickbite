@@ -5,8 +5,6 @@ import { Navigate, Outlet } from "react-router-dom";
 export default function AuthRoute() {
   const { user, isLoading } = useAuth();
 
-  console.log(user);
-
   if (isLoading) return <LoadingSpinner />;
 
   if (!user) return <Outlet />;

@@ -1,5 +1,5 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import type { CartResponse } from "@/services/types";
-import { ScrollArea } from "../../../ui/scroll-area";
 import CartButtons from "./cart-buttons";
 
 interface CartProductsProps {

@@ -27,7 +27,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             <AuthProvider>
               <ThemeProvider defaultTheme="dark">
                 {children}
-                <Toaster richColors />
+                <Toaster richColors closeButton theme="dark" />
                 {import.meta.env.VITE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} />}
               </ThemeProvider>
             </AuthProvider>

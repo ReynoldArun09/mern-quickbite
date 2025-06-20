@@ -1,6 +1,3 @@
-import CartPage from "@/pages/site/cart-page";
-import CheckoutPage from "@/pages/site/checkout-page";
-import MenuPage from "@/pages/site/menu-page";
 import { lazy } from "react";
 import { AUTH_ROUTES, BASE_ROUTE, PROTECTED_ROUTES } from "./routes";
 
@@ -8,6 +5,9 @@ const HomePage = lazy(() => import("@/pages/site/home-page"));
 const SignInPage = lazy(() => import("@/pages/auth/signin-page"));
 const SignUpPage = lazy(() => import("@/pages/auth/signup-page"));
 const ForgotPasswordPage = lazy(() => import("@/pages/auth/forgot-password-page"));
+const CartPage = lazy(() => import("@/pages/site/cart-page"));
+const CheckoutPage = lazy(() => import("@/pages/site/checkout-page"));
+const MenuPage = lazy(() => import("@/pages/site/menu-page"));
 
 export const baseRoutePaths = [
   { path: BASE_ROUTE.HOME, element: <HomePage /> },

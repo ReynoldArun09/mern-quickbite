@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { useRemoveToCartMutation, useUpdateCartCountOptimistic } from "@/services/cart/cart-mutation";
 import { MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
-import { Button } from "../../../ui/button";
 
 interface CartButtonsProps {
   productId: string;
@@ -8,13 +8,12 @@ interface CartButtonsProps {
 }
 
 export default function CartButtons({ productId, count }: CartButtonsProps) {
-  const { isPending, mutate } = useRemoveToCartMutation();
+  const { isPending, mutate: removeFromCart } = useRemoveToCartMutation();
 
   const { mutate: updateCartItem } = useUpdateCartCountOptimistic();
 
   const handleDelete = () => {
-    if (isPending) return;
-    mutate(productId);
+    if (!isPending) removeFromCart(productId);
   };
 
   const handleIncrement = () => {
@@ -35,16 +34,34 @@ export default function CartButtons({ productId, count }: CartButtonsProps) {
   return (
     <div className="flex gap-10">
       <div className="space-x-2.5">
-        <Button variant="outline" size="icon" className="size-8 rounded-r-none" onClick={handleDecrement}>
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-8 rounded-r-none"
+          onClick={handleDecrement}
+          aria-label="Decrease quantity"
+        >
           <MinusIcon className="size-3" aria-hidden="true" />
         </Button>
-        <span>{count}</span>
-        <Button variant="outline" size="icon" className="size-8 rounded-l-none" onClick={handleIncrement}>
+        <span className="min-w-[1.5rem] text-center">{count}</span>
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-8 rounded-l-none"
+          onClick={handleIncrement}
+          aria-label="Increase Quantity"
+        >
           <PlusIcon className="size-3" aria-hidden="true" />
         </Button>
       </div>
       <div>
-        <Button variant="destructive" size="icon" className="size-8" onClick={handleDelete}>
+        <Button
+          variant="destructive"
+          size="icon"
+          className="size-8"
+          onClick={handleDelete}
+          aria-label="remove from cart"
+        >
           <TrashIcon className="size-3" aria-hidden="true" />
         </Button>
       </div>

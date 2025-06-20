@@ -28,7 +28,7 @@ const ComponentGridContainer = ({ children, className, as: Comp = "div", ...prop
 
 const ComponentWrapper = ({ children, className, as: Comp = "section", ...props }: ComponentProps) => {
   return (
-    <Comp className={cn("mt-10", className)} {...props}>
+    <Comp className={cn("py-10", className)} {...props}>
       {children}
     </Comp>
   );

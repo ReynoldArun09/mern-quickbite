@@ -11,16 +11,21 @@ const navLinks = [
 export default function Navigation() {
   const { pathname } = useLocation();
   return (
-    <nav className="flex items-center gap-x-20">
+    <nav className="flex items-center justify-center gap-x-20">
       <SiteLogo />
       <div className="space-x-8 flex items-center">
         {navLinks.map((item) => (
           <Link
             key={item.pathName}
             to={item.href}
-            className={cn("flex items-center gap-2 tracking-wider font-bold", pathname === item.href && "text-primary")}
+            className={cn(
+              "flex items-center gap-2 font-semibold tracking-wide transition-colors",
+              pathname === item.href ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            )}
+            aria-current={pathname === item.href ? "page" : undefined}
           >
-            <item.icon size={20} /> {item.pathName}
+            <item.icon size={20} />
+            {item.pathName}
           </Link>
         ))}
       </div>

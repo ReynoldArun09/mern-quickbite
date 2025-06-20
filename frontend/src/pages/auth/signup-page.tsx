@@ -1,10 +1,14 @@
-import AuthWrapper from "../../components/auth/auth-wrapper";
-import SignUpForm from "../../components/auth/forms/signup-form";
+import AuthWrapper from "@/components/auth/auth-wrapper";
+import SignUpForm from "@/components/auth/forms/signup-form";
+import Head from "@/lib/seo/head";
 
 export default function SignUpPage() {
   return (
-    <AuthWrapper authType="SIGN_UP">
-      <SignUpForm />
-    </AuthWrapper>
+    <>
+      <Head title="Sign up" description={"sign up page for quickbite food delivery application"} />
+      <AuthWrapper authType="SIGN_UP">
+        <SignUpForm />
+      </AuthWrapper>
+    </>
   );
 }

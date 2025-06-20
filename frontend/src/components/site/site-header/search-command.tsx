@@ -1,11 +1,18 @@
+import { Button } from "@/components/ui/button";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Skeleton } from "@/components/ui/skeleton";
 import useDebounce from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 import { useSearchProductsQuery } from "@/services/products/products-query";
 import { SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Button } from "../../ui/button";
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../../ui/command";
-import { Skeleton } from "../../ui/skeleton";
 
 export default function SearchCommand() {
   const [openCommand, setOpenCommand] = useState(false);

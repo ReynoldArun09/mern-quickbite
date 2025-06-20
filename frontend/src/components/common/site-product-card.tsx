@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { useAddToCartMutation } from "@/services/cart/cart-mutation";
 import type { ProductType } from "@/services/types";
-import { useAddToCartMutation } from "../../services/cart/cart-mutation";
-import { Button } from "../ui/button";
-import { Card, CardFooter, CardHeader } from "../ui/card";
+import { Loader2 } from "lucide-react";
 
 interface SiteProductCardProps {
   item: ProductType;
@@ -21,21 +22,19 @@ export default function SiteProductCard({ item }: SiteProductCardProps) {
   return (
     <Card>
       <CardHeader>
-        <img src={item.image} alt={item.name} className="h-40 w-full hover:scale-101" />
+        <img src={item.image} alt={item.name} loading="lazy" className="h-40 w-full object-cover hover:scale-101" />
       </CardHeader>
-      <CardHeader>
+      <CardContent className="space-y-2.5 tracking-wide">
         <p className="truncate text-xl font-bold tracking-wider">{item.name}</p>
-      </CardHeader>
-      <CardFooter>
         <p className="text-sm tracking-wide line-clamp-2">{item.description}</p>
-      </CardFooter>
-      <CardFooter className="flex justify-between">
-        <p className="text-xl font-semibold">${item.price}</p>
-        <p className="font-semibold underline uppercase">{item.category}</p>
-      </CardFooter>
+        <div className="flex items-center justify-between">
+          <p className="text-xl font-semibold">${item.price}</p>
+          <p className="font-semibold underline uppercase">{item.category}</p>
+        </div>
+      </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={handleAddToCart}>
-          Add to cart
+        <Button className="w-full" onClick={handleAddToCart} disabled={isPending} aria-label="add to cart">
+          {isPending ? <Loader2 /> : "Add to cart"}
         </Button>
       </CardFooter>
     </Card>

@@ -1,10 +1,12 @@
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useSignInMutation } from "@/services/auth/auth-mutation";
 import { signInSchema, type signInSchemaType } from "@/validations/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../ui/form";
-import { Input } from "../../ui/input";
 import AuthSubmitButton from "../auth-submit-button";
+
+const authType = "SIGN_IN";
 
 export default function SignInForm() {
   const form = useForm<signInSchemaType>({
@@ -31,7 +33,7 @@ export default function SignInForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email address..." type="email" {...field} />
+                <Input placeholder="Enter your email address..." type="email" aria-label="Email Address" {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />
             </FormItem>
@@ -44,13 +46,13 @@ export default function SignInForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your password..." type="password" {...field} />
+                <Input placeholder="Enter your password..." aria-label="Password" type="password" {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
-        <AuthSubmitButton isPending={isPending} authType="SIGN_IN" />
+        <AuthSubmitButton isPending={isPending} authType={authType} />
       </form>
     </Form>
   );

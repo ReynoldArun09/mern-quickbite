@@ -1,7 +1,7 @@
+import { buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { SheetFooter, SheetTrigger } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
-import { buttonVariants } from "../../../ui/button";
-import { Separator } from "../../../ui/separator";
-import { SheetFooter, SheetTrigger } from "../../../ui/sheet";
 
 export default function CartDetails({ cartTotal }: { cartTotal: number }) {
   return (

@@ -1,4 +1,4 @@
-import { authMiddleware } from "./authMiddleware";
+import { authMiddleware, isAdminMiddleware } from "./authMiddleware";
 import { errorMiddleware } from "./errorMiddleware";
 
-export { authMiddleware, errorMiddleware };
+export { authMiddleware, errorMiddleware, isAdminMiddleware };

@@ -39,3 +39,12 @@ export const authMiddleware = async (request: Request, response: Response, next:
     next(error);
   }
 };
+
+export const isAdminMiddleware = (request: Request, response: Response, next: NextFunction) => {
+  const user = request.ctx;
+
+  if (user.role !== "admin") {
+    throw new customError(GlobalErrorMessages.UNAUTHORIZED, HttpStatusCode.UNAUTHORIZED);
+  }
+  next();
+};

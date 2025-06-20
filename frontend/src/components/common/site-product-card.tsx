@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import useAuth from "@/hooks/useAuth";
 import { useAddToCartMutation } from "@/services/cart/cart-mutation";
 import type { ProductType } from "@/services/types";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface SiteProductCardProps {
   item: ProductType;
@@ -10,8 +12,13 @@ interface SiteProductCardProps {
 
 export default function SiteProductCard({ item }: SiteProductCardProps) {
   const { isPending, mutate: addToCart } = useAddToCartMutation();
+  const { user } = useAuth();
 
   const handleAddToCart = () => {
+    if (!user) {
+      toast.info("You need to login to add product in cart.");
+      return;
+    }
     if (isPending) return;
     addToCart({
       productId: item._id,

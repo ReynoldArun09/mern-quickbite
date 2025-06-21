@@ -14,7 +14,7 @@ export const signInApi = async (values: signInSchemaType): Promise<siginResponse
 
 export const verifyApi = async () => {
   const response = await axiosInstance.get("auth/verify");
-  return response.data;
+  return response.data.data;
 };
 
 export const signOutApi = async (): Promise<GeneralResponseType> => {

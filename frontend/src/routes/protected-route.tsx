@@ -5,6 +5,8 @@ import useAuth from "../hooks/useAuth";
 export default function ProtectedRoute() {
   const { user, isLoading } = useAuth();
 
+  console.log(user);
+
   if (isLoading) {
     return <LoadingSpinner />;
   }

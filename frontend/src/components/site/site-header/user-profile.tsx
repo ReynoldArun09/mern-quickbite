@@ -35,7 +35,7 @@ export default function UserProfile() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {isAdmin && (
-          <Link to="/dashboard">
+          <Link to="/admin-dashboard">
             <DropdownMenuItem>Dashboard</DropdownMenuItem>
           </Link>
         )}

@@ -2,7 +2,7 @@ import AuthLayout from "@/layout/auth-layout";
 import SiteLayout from "@/layout/site-layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthRoute from "./auth-route";
-import { authenticationRoutePaths, baseRoutePaths, protectedRoutesPaths } from "./common/routePaths";
+import { adminRoutesPath, authenticationRoutePaths, baseRoutePaths, protectedRoutesPaths } from "./common/routePaths";
 import ProtectedRoute from "./protected-route";
 
 export default function AppRoutes() {
@@ -26,6 +26,12 @@ export default function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           {protectedRoutesPaths.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Route>
+
+        <Route>
+          {adminRoutesPath.map((route) => (
+            <Route key={route.path} path={route.path} element={route.elememt} />
           ))}
         </Route>
       </Routes>

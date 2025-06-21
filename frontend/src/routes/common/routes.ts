@@ -15,3 +15,7 @@ export const PROTECTED_ROUTES = {
   PURCHASE_SUCCESS: "/purchase-success",
   PURCHASE_CANCEL: "/purchase-cancel",
 };
+
+export const ADMIN_ROUTES = {
+  DASHBOARD: "/admin-dashboard",
+};

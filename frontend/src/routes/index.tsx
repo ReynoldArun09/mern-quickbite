@@ -1,6 +1,7 @@
 import AuthLayout from "@/layout/auth-layout";
 import SiteLayout from "@/layout/site-layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AdminRoute from "./admin-route";
 import AuthRoute from "./auth-route";
 import { adminRoutesPath, authenticationRoutePaths, baseRoutePaths, protectedRoutesPaths } from "./common/routePaths";
 import ProtectedRoute from "./protected-route";
@@ -29,7 +30,7 @@ export default function AppRoutes() {
           ))}
         </Route>
 
-        <Route>
+        <Route element={<AdminRoute />}>
           {adminRoutesPath.map((route) => (
             <Route key={route.path} path={route.path} element={route.elememt} />
           ))}

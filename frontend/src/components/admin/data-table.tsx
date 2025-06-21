@@ -12,7 +12,6 @@ import {
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";

@@ -14,7 +14,7 @@ export type VerifyResponseType = {
 export type UserType = {
   email: string;
   _id: string;
-  fristname: string;
+  firstname: string;
   lastname: string;
   mobile: string;
   blocked?: boolean;

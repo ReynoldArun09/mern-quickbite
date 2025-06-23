@@ -1,9 +1,7 @@
-import mongoose, { Document } from "mongoose";
-import { UserType } from "../types";
+import mongoose from "mongoose";
+import { userRole, UserType } from "../types";
 
-type UserSchemaType = UserType & Document;
-
-const userSchema = new mongoose.Schema<UserSchemaType>(
+const userSchema = new mongoose.Schema<UserType>(
   {
     email: {
       type: String,
@@ -28,8 +26,8 @@ const userSchema = new mongoose.Schema<UserSchemaType>(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: Object.values(userRole),
+      default: userRole.USER,
     },
     blocked: {
       type: Boolean,
@@ -41,4 +39,4 @@ const userSchema = new mongoose.Schema<UserSchemaType>(
   }
 );
 
-export const userModel = mongoose.model<UserSchemaType>("User", userSchema);
+export const userModel = mongoose.model<UserType>("User", userSchema);

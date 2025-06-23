@@ -1,26 +1,21 @@
 import app from "./app";
 import { InitializeMongoConnection, ParsedEnvVariables } from "./configs";
-import { GlobalErrorMessages, GlobalSuccessMessages } from "./constants";
+import { logServerFailed, logServerStarted } from "./helpers";
 import { customLogger } from "./utils";
 
-const PORT = ParsedEnvVariables.PORT;
-const ENV = ParsedEnvVariables.NODE_ENV;
+const { PORT } = ParsedEnvVariables;
 
-(async () => {
+const startServer = async () => {
   try {
     await InitializeMongoConnection();
-    app.listen(PORT, () => {
-      ENV === "development"
-        ? customLogger.info(GlobalSuccessMessages.DEV_SERVER_STARTED)
-        : customLogger.info(GlobalSuccessMessages.SERVER_STARTED);
-    });
+    app.listen(PORT, logServerStarted);
   } catch (error) {
-    ENV === "development"
-      ? customLogger.error(GlobalErrorMessages.DEV_SERVER_FAILED_TO_START, error)
-      : customLogger.error(GlobalErrorMessages.SERVER_FAILED_TO_START, error);
+    logServerFailed();
     process.exit(1);
   }
-})();
+};
+
+startServer();
 
 process.on("uncaughtException", (error: Error) => {
   customLogger.error("Uncaught exception:", error);

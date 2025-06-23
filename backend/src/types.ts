@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 declare global {
   namespace Express {
     interface Request {
@@ -6,9 +8,10 @@ declare global {
   }
 }
 
-export type UserContextType = Omit<UserType, "password"> & {
-  _id: ObjectId;
-};
+export enum userRole {
+  ADMIN = "admin",
+  USER = "user",
+}
 
 export type UserType = {
   email: string;
@@ -16,14 +19,19 @@ export type UserType = {
   firstname: string;
   lastname: string;
   mobile: string;
-  role: string;
+  role: userRole;
   blocked: boolean;
+};
+
+export type UserContextType = Omit<UserType, "password"> & {
+  _id: Types.ObjectId;
 };
 
 export type ProductType = {
   name: string;
   description: string;
   price: number;
+  originalPrice: number;
   category: string;
   image: string;
   starRating: number;
@@ -31,16 +39,20 @@ export type ProductType = {
   vegetarian: boolean;
   discount: number;
   ingredients: string[];
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type CartProduct = {
-  product: string;
+  product: Types.ObjectId;
   count: number;
   price: number;
 };
 
-export type CartModelType = {
+export type CartType = {
   products: CartProduct[];
   cartTotal: number;
-  orderBy: Types.ObjectIdj;
+  orderBy: Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 };

@@ -1,5 +1,5 @@
 import { type ColumnDef } from "@tanstack/react-table";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../ui/badge";
 import CustomerDropDownMenu from "./customer-dropdown";
 
 export type CustomerColumnType = {

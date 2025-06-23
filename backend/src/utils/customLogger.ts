@@ -12,6 +12,8 @@ const formatStyle = format.combine(
  * - Logs are colorized and include timestamps in "YYYY-MM-DD HH:mm:ss" format.
  * - All logs (info and above) are printed to the console.
  * - Only error-level logs are written to "error.log".
+ *
+ * @package `winston`
  */
 export const customLogger = createLogger({
   level: "info",

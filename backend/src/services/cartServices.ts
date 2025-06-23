@@ -4,25 +4,34 @@ import { cartModel, productModel } from "../models";
 import { customError } from "../utils";
 
 /**
- * getCartItemsForUserService function to handle get cartitems from database.
- * - get cart items from database.
+ * Retrieves cart items for a specific user.
+ *
+ * @function getCartItemsForUserService
+ * @async
+ * @param {Types.ObjectId} userId - MongoDB ObjectId of the user.
+ * @returns {Promise<{ cartItems: any }>} The user's cart populated with product details.
  */
-export const getCartItemsForUserService = async (userId: Types.ObjectId) => {
+export const getCartItemsForUserService = async (userId: Types.ObjectId): Promise<{ cartItems: any }> => {
   const cartItems = await cartModel.findOne({ orderBy: userId }).populate("products.product");
   return { cartItems };
 };
 
 /**
- * createUserCartService function to handle create new cart in database and add product.
- * - check if product exist in database.
- * - check if cart exist in database.
- * - if cart doesnt exist then new cart is created and product is added to it.
- * - if cart already exist. get product index using findIndex.
- * - update the count if product already exist or add item to the existing cart.
+ * Creates or updates a user's cart with a product and quantity.
  *
- * @throws product not found in database.
+ * @function createUserCartservice
+ * @async
+ * @param {string} productId - The ID of the product to add.
+ * @param {number} count - Quantity of the product.
+ * @param {Types.ObjectId} userId - MongoDB ObjectId of the user.
+ * @throws {customError} If product does not exist.
+ * @returns {Promise<{ existingCart: any }>} The updated or newly created cart.
  */
-export const createUserCartservice = async (productId: string, count: number, userId: Types.ObjectId) => {
+export const createUserCartservice = async (
+  productId: string,
+  count: number,
+  userId: Types.ObjectId
+): Promise<{ existingCart: any }> => {
   const existingProduct = await productModel.findById(productId);
 
   if (!existingProduct) {
@@ -50,13 +59,13 @@ export const createUserCartservice = async (productId: string, count: number, us
 
   existingCart.products || [];
 
-  const productIndex = existingCart?.products?.findIndex((item) => item.product.toString() === productId);
+  const productIndex = existingCart?.products?.findIndex((item) => item.product.toString() === productId.toString());
 
   if (productIndex > -1) {
     existingCart.products[productIndex].count += count;
   } else {
     existingCart.products.push({
-      product: productId,
+      product: productId as unknown as Types.ObjectId,
       count,
       price: existingProduct.price,
     });
@@ -70,14 +79,16 @@ export const createUserCartservice = async (productId: string, count: number, us
 };
 
 /**
- * removeFromCartService function to handle remove product from database.
- * - check if product exist in database.
- * - check if cart exist in database.
- * - get product index using findIndex and remove item using splice.
+ * Removes a product from a user's cart.
  *
- * @throws product not found in database if product doesnt exist and if also cart doesnt exist.
+ * @function removeFromCartService
+ * @async
+ * @param {string} productId - The ID of the product to remove.
+ * @param {Types.ObjectId} userId - MongoDB ObjectId of the user.
+ * @throws {customError} If product or cart is not found.
+ * @returns {Promise<void>}
  */
-export const removeFromCartService = async (productId: string, userId: Types.ObjectId) => {
+export const removeFromCartService = async (productId: string, userId: Types.ObjectId): Promise<void> => {
   const existingProduct = await productModel.findById(productId);
 
   if (!existingProduct) {
@@ -90,7 +101,7 @@ export const removeFromCartService = async (productId: string, userId: Types.Obj
     throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
   }
 
-  const productIndex = existingCart.products.findIndex((item) => item.product.toString() === productId);
+  const productIndex = existingCart.products.findIndex((item) => item.product.toString() === productId.toString());
 
   if (productIndex !== -1) {
     const existingCartItem = existingCart.products[productIndex];
@@ -106,7 +117,22 @@ export const removeFromCartService = async (productId: string, userId: Types.Obj
   }
 };
 
-export const updateProductCountService = async (productId: string, count: number, userId: Types.ObjectId) => {
+/**
+ * Updates the quantity of a product in the cart, or removes it if count is 0.
+ *
+ * @function updateProductCountService
+ * @async
+ * @param {string} productId - The ID of the product to update.
+ * @param {number} count - New quantity for the product.
+ * @param {Types.ObjectId} userId - MongoDB ObjectId of the user.
+ * @throws {customError} If product or cart is not found.
+ * @returns {Promise<{ existingCart: any }>} The updated cart object.
+ */
+export const updateProductCountService = async (
+  productId: string,
+  count: number,
+  userId: Types.ObjectId
+): Promise<{ existingCart: any }> => {
   const existingProduct = await productModel.findById(productId);
 
   if (!existingProduct) {
@@ -119,7 +145,7 @@ export const updateProductCountService = async (productId: string, count: number
     throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
   }
 
-  const productIndex = existingCart.products.findIndex((item) => item.product.toString() === productId);
+  const productIndex = existingCart.products.findIndex((item) => item.product.toString() === productId.toString());
 
   if (productIndex === -1) {
     throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);

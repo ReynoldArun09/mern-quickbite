@@ -8,7 +8,6 @@ const SignInPage = lazy(() => import("@/pages/auth/signin-page"));
 const SignUpPage = lazy(() => import("@/pages/auth/signup-page"));
 const ForgotPasswordPage = lazy(() => import("@/pages/auth/forgot-password-page"));
 const CartPage = lazy(() => import("@/pages/site/cart-page"));
-const CheckoutPage = lazy(() => import("@/pages/site/checkout-page"));
 const MenuPage = lazy(() => import("@/pages/site/menu-page"));
 const AdminDashboardPage = lazy(() => import("@/pages/admin/admin-dashboard-page"));
 
@@ -25,9 +24,8 @@ export const authenticationRoutePaths = [
 
 export const protectedRoutesPaths = [
   { path: PROTECTED_ROUTES.CART, element: <CartPage /> },
-  { path: PROTECTED_ROUTES.CHECKOUT, element: <CheckoutPage /> },
   { path: PROTECTED_ROUTES.PURCHASE_SUCCESS, element: <PurchaseSuccessPage /> },
   { path: PROTECTED_ROUTES.PURCHASE_CANCEL, element: <PurchaseCancelPage /> },
 ];
 
-export const adminRoutesPath = [{ path: ADMIN_ROUTES.DASHBOARD, elememt: <AdminDashboardPage /> }];
+export const adminRoutesPath = [{ path: ADMIN_ROUTES.DASHBOARD, element: <AdminDashboardPage /> }];

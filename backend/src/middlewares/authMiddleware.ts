@@ -1,9 +1,9 @@
-import { type NextFunction, type Request, type Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { ParsedEnvVariables } from "../configs";
 import { GlobalErrorMessages, HttpStatusCode } from "../constants";
 import { userModel } from "../models";
-import { UserContextType } from "../types";
+import { type UserContextType } from "../types";
 import { customError } from "../utils";
 
 export const authMiddleware = async (request: Request, response: Response, next: NextFunction): Promise<any> => {
@@ -43,7 +43,7 @@ export const authMiddleware = async (request: Request, response: Response, next:
 export const isAdminMiddleware = (request: Request, response: Response, next: NextFunction) => {
   const user = request.ctx;
 
-  if (user.role !== "admin") {
+  if (!user || user.role !== "admin") {
     throw new customError(GlobalErrorMessages.UNAUTHORIZED, HttpStatusCode.UNAUTHORIZED);
   }
   next();

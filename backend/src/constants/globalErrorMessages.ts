@@ -11,4 +11,5 @@ export enum GlobalErrorMessages {
   JWT_EXPIRED = "JWT Token has expired. Please log in again. ⏳",
   JWT_INVALID = "JWT Token is invalid. Please log in again. 🚫",
   INTERNAL_SERVER_ERROR = "Oops! Something went wrong. Please try again later. 😓",
+  AUTH_RATE_LIMIT = "Too many login/signup attempts. Try again later.",
 }

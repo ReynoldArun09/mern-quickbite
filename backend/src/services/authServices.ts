@@ -3,18 +3,22 @@ import jwt from "jsonwebtoken";
 import { ParsedEnvVariables } from "../configs";
 import { ApiErrorMessages, HttpStatusCode } from "../constants";
 import { userModel } from "../models";
+import { type UserType } from "../types";
 import { customError } from "../utils";
-import { signInSchemaType, signUpSchemaType } from "../validations/authSchema";
+import { signInSchemaType, signUpSchemaType } from "../validations";
 
 /**
- * signUpUserService function to handle creating a user in database.
- * - check if user already exist in database.
- * - hash password using bcrypt.
- * - create user in mongodb database.
+ * Service to signup a new user.
  *
- * @throws user already exists error message with 400 status code.
+ * - Checks if a user with the provided email already exists.
+ * - If not, hashes the password using bcrypt and creates a new user in database.
+ *
+ * @function signUpService
+ * @async
+ * @param {signUpSchemaType} body - Object containing user signup details.
+ * @throws {customError} If a user with the same email already exists.
  */
-export const signUpUserService = async (body: signUpSchemaType) => {
+export const signUpService = async (body: signUpSchemaType) => {
   const { email, password, firstname, lastname, mobile } = body;
 
   const existingUser = await userModel.findOne({ email });
@@ -35,18 +39,20 @@ export const signUpUserService = async (body: signUpSchemaType) => {
 };
 
 /**
- * signInUserService function to handle checking if user exist in database.
- * - check if user exist in database.
- * - compare password using bcryptjs
- * - filter data to remove password field.
- * - generate token using jwt
+ * Service to authenticate a user and generate a JWT token.
+ * - Check's if user already exists.
+ * - compare the provided password with the stored password.
  *
- * @throws user not found in database for both case user not found and password incorrect.
- * @returns userData and token
+ * @function signInService
+ * @async
+ * @throws {customError} If the user does not exist.
+ * @returns {Promise<{user:Object, token:string}>} authenticated user details and a JWT token.
  */
-export const signInUserService = async (body: signInSchemaType) => {
-  const { email, password } = body;
-
+export const signInService = async ({
+  email,
+  password,
+  rememberMe,
+}: signInSchemaType): Promise<{ user: Omit<UserType, "password">; token: string }> => {
   const existingUser = await userModel.findOne({ email });
 
   if (!existingUser) {
@@ -65,10 +71,12 @@ export const signInUserService = async (body: signInSchemaType) => {
     lastname: existingUser.lastname,
     email: existingUser.email,
     mobile: existingUser.mobile,
+    role: existingUser.role,
+    blocked: existingUser.blocked,
   };
 
   const token = await jwt.sign({ _id: existingUser._id }, ParsedEnvVariables.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1d",
+    expiresIn: rememberMe ? "30d" : "1d",
   });
 
   return { user: userData, token };

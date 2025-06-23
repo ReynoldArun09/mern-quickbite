@@ -7,16 +7,18 @@ import {
   searchProductsApi,
 } from "./products-api";
 
+import { PRODUCT_QUERY_KEYS } from "./products-constants";
+
 export function useGetAllProductsQuery() {
   return useQuery({
-    queryKey: ["all-products-key"],
+    queryKey: PRODUCT_QUERY_KEYS.ALL_PRODUCTS,
     queryFn: getAllProductsApi,
   });
 }
 
 export function useGetVegProductsQuery() {
   return useQuery({
-    queryKey: ["veg-products-key"],
+    queryKey: PRODUCT_QUERY_KEYS.VEG_PRODUCTS,
     queryFn: getVegProductsApi,
     staleTime: Infinity,
   });
@@ -24,7 +26,7 @@ export function useGetVegProductsQuery() {
 
 export function useGetNonVegProductsQuery() {
   return useQuery({
-    queryKey: ["nonveg-products-key"],
+    queryKey: PRODUCT_QUERY_KEYS.NONVEG_PRODUCTS,
     queryFn: getNonVegProductsApi,
     staleTime: Infinity,
   });
@@ -32,7 +34,7 @@ export function useGetNonVegProductsQuery() {
 
 export function useGetRecentlyAddedProductsQuery() {
   return useQuery({
-    queryKey: ["recently-products-key"],
+    queryKey: PRODUCT_QUERY_KEYS.RECENT_PRODUCTS,
     queryFn: getRecentlyAddedProductsApi,
     staleTime: Infinity,
   });
@@ -40,7 +42,7 @@ export function useGetRecentlyAddedProductsQuery() {
 
 export function useSearchProductsQuery(searchTerm: string) {
   return useQuery({
-    queryKey: ["search-products-key", searchTerm],
+    queryKey: PRODUCT_QUERY_KEYS.SEARCH_PRODUCTS(searchTerm),
     queryFn: () => searchProductsApi(searchTerm),
     enabled: !!searchTerm,
   });

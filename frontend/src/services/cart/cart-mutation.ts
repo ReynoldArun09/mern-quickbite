@@ -1,14 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CartProduct, CartResponse } from "../types";
 import { addToCartApi, removeFromCartApi, updateProductCountApi } from "./cart-api";
+import { CART_MUTATION_KEYS, CART_QUERY_KEYS } from "./cart-constants";
 
 export function useAddToCartMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["add-to-cart-key"],
+    mutationKey: CART_MUTATION_KEYS.ADD_TO_CART,
     mutationFn: addToCartApi,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["get-cart-key"] });
+      await queryClient.invalidateQueries({ queryKey: CART_QUERY_KEYS.GET_USER_CART });
     },
   });
 }
@@ -16,10 +17,10 @@ export function useAddToCartMutation() {
 export function useRemoveToCartMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["remove-from-cart-key"],
+    mutationKey: CART_MUTATION_KEYS.REMOVE_FROM_CART,
     mutationFn: removeFromCartApi,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["get-cart-key"] });
+      await queryClient.invalidateQueries({ queryKey: CART_QUERY_KEYS.GET_USER_CART });
     },
   });
 }
@@ -27,14 +28,14 @@ export function useRemoveToCartMutation() {
 export function useUpdateCartCountOptimistic() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["update-cart-count-key"],
+    mutationKey: CART_MUTATION_KEYS.UPDATE_CART,
     mutationFn: updateProductCountApi,
     onMutate: async ({ productId, count }) => {
-      await queryClient.cancelQueries({ queryKey: ["get-cart-key"] });
+      await queryClient.cancelQueries({ queryKey: CART_QUERY_KEYS.GET_USER_CART });
 
-      const previousCart = queryClient.getQueryData(["get-cart-key"]);
+      const previousCart = queryClient.getQueryData(CART_QUERY_KEYS.GET_USER_CART);
 
-      queryClient.setQueryData(["get-cart-key"], (old: CartResponse) => {
+      queryClient.setQueryData(CART_QUERY_KEYS.GET_USER_CART, (old: CartResponse) => {
         if (!old) return old;
 
         return {
@@ -54,11 +55,11 @@ export function useUpdateCartCountOptimistic() {
     },
     onError: (_, __, context) => {
       if (context?.previousCart) {
-        queryClient.setQueryData(["get-cart-key"], context.previousCart);
+        queryClient.setQueryData(CART_QUERY_KEYS.GET_USER_CART, context.previousCart);
       }
     },
     onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["get-cart-key"] });
+      await queryClient.invalidateQueries({ queryKey: CART_QUERY_KEYS.GET_USER_CART });
     },
   });
 }

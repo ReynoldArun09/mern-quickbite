@@ -11,16 +11,16 @@ import {
 import { customAsyncWrapper, sendApiResponse } from "../utils";
 
 /**
- * Handles the request to retrieve all customers.
+ * Handles the request to retrieve all customers except admin.
  *
  * Calls the `getAllCustomerService` to fetch the list of customers,
- * excluding any admin users, and send success message with 200 status with the customer data.
  *
  * @function getAllCustomers
+ * @async
  * @param {Request} request - The Express request object.
  * @param {Response} response - The Express response object.
  *
- * @returns Sends an API response containing an array of customers with status 200.
+ * @returns Sends an response with the list of users and HTTP 200 status.
  */
 export const getAllCustomers = customAsyncWrapper(async (request: Request, response: Response) => {
   const users = await getAllCustomersService();
@@ -33,16 +33,17 @@ export const getAllCustomers = customAsyncWrapper(async (request: Request, respo
 });
 
 /**
- * Handle the request to retrieve the products.
+ * Handle the request to retrieve all the available products.
  *
- * Calls the `getAllProductsForAdminService` to fetch the products from database,
- * and send success message with 200 status with the products data.
+ * Calls the `getAllProductsForAdminService` to fetch the products.
+ *
  *
  * @function getAllProductsForAdmin
+ * @async
  * @param {Request} request - The Express request object.
  * @param {Response} response - The Express response object.
  *
- * @returns Send an API response containng an array of products list with status 200.
+ * @returns Sends an response with list of products and HTTP 200 status.
  */
 export const getAllProductsForAdmin = customAsyncWrapper(async (request: Request, response: Response) => {
   const products = await getAllProductsForAdminService();
@@ -55,19 +56,20 @@ export const getAllProductsForAdmin = customAsyncWrapper(async (request: Request
 });
 
 /**
- * Handle the request to delete a customer.
+ * Handle the request to delete a customer by user ID.
  *
- * Calls the `deleteCustomerService` with userId, find's the customer from database. if customer is not found
- * returns customer not found error. if customer exist delete the customer from database.
+ * Calls the `deleteCustomerService` to remove a customer from the database.
+ *
  *
  * @function deleteCustomer
+ * @async
  * @param {Request} request - The Express request object.
  * @param {Response} response - The Express response object.
  *
- * @returns Send an API response with success message and status 200.
+ * @returns Sends a success message and HTTP 200 status upon successful deletion.
  */
 export const deleteCustomer = customAsyncWrapper(async (request: Request, response: Response) => {
-  const userId = request.params.userId;
+  const { userId } = request.params;
   await deleteCustomerService(userId);
 
   sendApiResponse({
@@ -78,20 +80,19 @@ export const deleteCustomer = customAsyncWrapper(async (request: Request, respon
 });
 
 /**
- * Handle the request to delete a product.
+ * Handle the request to delete a product by product ID.
  *
- * Calls the `deleteProductService` with productId from params,
- * find's the prodcut from database. if product is not found
- * returns product not found error. if product exist delete the product from database.
+ * Calls the `deleteProductService` to remove a product from the database.
  *
  * @function deleteProduct
+ * @async
  * @param {Request} request - The Express request object.
  * @param {Response} response - The Express response object.
  *
- * @returns Send an API response with success message and status 200.
+ * @returns Sends a success message and HTTP 200 status upon successful deletion..
  */
 export const deleteProduct = customAsyncWrapper(async (request: Request, response: Response) => {
-  const productId = request.params.productId;
+  const { productId } = request.params;
   await deleteProductService(productId);
 
   sendApiResponse({
@@ -102,22 +103,19 @@ export const deleteProduct = customAsyncWrapper(async (request: Request, respons
 });
 
 /**
- * Handle the request to enable or disable a product.
+ * Handle the request to enable or disable a product by product ID.
  *
- * Calls the `enableDisableProductService` with productId from params,
- * find's the prodcut from database. if product is not found
- * returns product not found error. if product exist based on available property product
- * is disabled or enabled.
+ * Calls the `enableDisableProductService` to toggle the active status of the specified product.
  *
- * @function deleteProduct
+ * @function enableDisableProduct
+ * @async
  * @param {Request} request - The Express request object.
  * @param {Response} response - The Express response object.
  *
- * @returns Send an API response with success message and
- * api message product enabled or disabled status 200.
+ * @returns Sends a response with a status specific message and HTTP 200 status.
  */
 export const enableDisableProduct = customAsyncWrapper(async (request: Request, response: Response) => {
-  const productId = request.params.productId;
+  const { productId } = request.params;
   const { status } = await enableDisableProductService(productId);
 
   sendApiResponse({
@@ -128,21 +126,20 @@ export const enableDisableProduct = customAsyncWrapper(async (request: Request, 
 });
 
 /**
- * Handle the request to block or unblock a customer/user.
+ * Handle the request to block or unblock a customer/user by user ID.
  *
- * Calls the `blockUnBlockUser` with userId from params,
- * find's the user from database. if user is not found
- * returns user not found error. if user exist based on blockd property used blocked
- * or unblocked.
+ * Calls the `blockUnBlockUserService` toggle the blocked status of the specified user
+
  *
- * @function deleteProduct
+ * @function blockUnBlockUser
+ * @async
  * @param {Request} request - The Express request object.
  * @param {Response} response - The Express response object.
  *
- * @returns Send an API response with success message and status 200.
+ * @returns Sends a response with a status specific message and HTTP 200 status.
  */
 export const blockUnBlockUser = customAsyncWrapper(async (request: Request, response: Response) => {
-  const userId = request.params.userId;
+  const { userId } = request.params;
   const { status } = await blockUnBlockUserService(userId);
 
   sendApiResponse({

@@ -32,7 +32,7 @@ export default function AppRoutes() {
 
         <Route element={<AdminRoute />}>
           {adminRoutesPath.map((route) => (
-            <Route key={route.path} path={route.path} element={route.elememt} />
+            <Route key={route.path} path={route.path} element={route.element} />
           ))}
         </Route>
       </Routes>

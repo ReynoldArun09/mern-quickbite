@@ -1,5 +1,5 @@
 import { type CorsOptions } from "cors";
-import { ParsedEnvVariables } from "./appConfig";
+import { ParsedEnvVariables } from ".";
 
 /**
  * CORS configuration options.

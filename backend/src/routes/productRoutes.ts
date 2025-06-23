@@ -1,12 +1,13 @@
 import { Router } from "express";
 import * as product from "../controllers/productController";
+import { PRODUCT_ROUTES } from "./routeConstants";
 
 const productRoutes = Router();
 
-productRoutes.get("/all-products", product.getAllProducts);
-productRoutes.get("/veg-products", product.getTopVegProducts);
-productRoutes.get("/nonveg-products", product.getTopNonVegProducts);
-productRoutes.get("/recently-added", product.getRecentlyAddedProducts);
-productRoutes.get("/search/:searchTerm", product.searchProducts);
+productRoutes.get(PRODUCT_ROUTES.ALL_PRODUCTS, product.getAllProducts);
+productRoutes.get(PRODUCT_ROUTES.VEG_PRODUCTS, product.getTopVegProducts);
+productRoutes.get(PRODUCT_ROUTES.NONVEG_PRODUCTS, product.getTopNonVegProducts);
+productRoutes.get(PRODUCT_ROUTES.RECENTLY_ADDED, product.getRecentlyAddedProducts);
+productRoutes.get(PRODUCT_ROUTES.SEARCH, product.searchProducts);
 
 export default productRoutes;

@@ -13,7 +13,7 @@ export default function MenuList() {
   const filteredProducts = products?.filter((product) => product.category.toLowerCase().includes(filterQuery));
 
   return (
-    <ComponentWrapper className="py-2">
+    <ComponentWrapper className="py-2" aria-busy={isLoading}>
       <ComponentTitle title="Top Dishes for you." />
       {isLoading ? (
         <LoadingSpinner />

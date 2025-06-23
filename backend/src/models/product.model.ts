@@ -1,14 +1,11 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 import { ProductType } from "../types";
 
-type ProductSchemaType = ProductType & Document;
-
-const productSchema = new mongoose.Schema<ProductSchemaType>(
+const productSchema = new mongoose.Schema<ProductType>(
   {
     name: {
       type: String,
       required: true,
-      unique: true,
     },
     description: {
       type: String,
@@ -17,6 +14,12 @@ const productSchema = new mongoose.Schema<ProductSchemaType>(
     price: {
       type: Number,
       required: true,
+      min: 0,
+    },
+    originalPrice: {
+      type: Number,
+      required: true,
+      min: 0,
     },
     category: {
       type: String,
@@ -28,6 +31,7 @@ const productSchema = new mongoose.Schema<ProductSchemaType>(
     starRating: {
       type: Number,
       default: 1,
+      min: 1,
       max: 5,
     },
     available: {
@@ -40,6 +44,9 @@ const productSchema = new mongoose.Schema<ProductSchemaType>(
     },
     discount: {
       type: Number,
+      default: 0,
+      min: 0,
+      max: 10,
     },
     ingredients: {
       type: [String],
@@ -52,4 +59,6 @@ const productSchema = new mongoose.Schema<ProductSchemaType>(
   }
 );
 
-export const productModel = mongoose.model<ProductSchemaType>("Product", productSchema);
+productSchema.index({ name: "text" });
+
+export const productModel = mongoose.model<ProductType>("Product", productSchema);

@@ -1,17 +1,19 @@
 import LoadingSpinner from "@/components/common/loading-spinner";
 import useAuth from "@/hooks/useAuth";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 export default function AdminRoute() {
-  const { user, isLoading } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const location = useLocation();
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  if (isLoading) return <LoadingSpinner />;
 
-  if (user && user.role === "admin") {
+  if (isAuthenticated && isAdmin) {
     return <Outlet />;
   }
 
-  return <Navigate to="/" replace />;
+  if (!isAuthenticated && !isAdmin) {
+    const encoded = encodeURIComponent(location.pathname);
+    return <Navigate to={`/auth/sign-in?returnUrl=${encoded}`} replace />;
+  }
 }

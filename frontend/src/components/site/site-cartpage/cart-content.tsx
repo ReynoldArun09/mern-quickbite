@@ -1,9 +1,9 @@
+import SiteLogo from "@/components/common/site-logo";
+import CartButtons from "@/components/site/site-header/cart-sheet/cart-buttons";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { CartProduct } from "@/services/types";
 import { ShoppingCartIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import SiteLogo from "../../common/site-logo";
-import CartButtons from "../site-header/cart-sheet/cart-buttons";
 
 interface CartContentProps {
   products: CartProduct[];
@@ -39,8 +39,8 @@ export default function CartContent({ products }: CartContentProps) {
               <div className="w-[400px]">
                 <CartButtons productId={product.product._id} count={product.count} />
               </div>
-              <span>$ {product.product.price}</span>
-              <span>$ {product.count * product.product.price}</span>
+              <span>${product.product.price}</span>
+              <span>${product.count * product.product.price}</span>
             </div>
           ))
         ) : (

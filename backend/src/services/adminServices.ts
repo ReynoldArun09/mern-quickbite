@@ -1,18 +1,42 @@
 import { ApiErrorMessages, HttpStatusCode } from "../constants";
 import { productModel, userModel } from "../models";
+import { ProductType, UserType } from "../types";
 import { customError } from "../utils";
 
-export const getAllCustomersService = async () => {
+/**
+ * Retrieves all users with the role 'user' (i.e., non-admin customers).
+ *
+ * @function getAllCustomersService
+ * @async
+ * @returns {Promise<Array>} A promise that resolves to an array of customer documents.
+ */
+export const getAllCustomersService = async (): Promise<UserType[]> => {
   const users = await userModel.find({ role: "user" });
   return users;
 };
 
-export const getAllProductsForAdminService = async () => {
+/**
+ * Retrieves all products from the database for admin view.
+ *
+ * @function getAllProductsForAdminService
+ * @async
+ * @returns {Promise<Array>} A promise that resolves to an array of product documents.
+ */
+export const getAllProductsForAdminService = async (): Promise<ProductType[]> => {
   const products = await productModel.find({});
   return products;
 };
 
-export const deleteCustomerService = async (userId: string) => {
+/**
+ * Deletes a customer by user ID after validating existence.
+ *
+ * @function deleteCustomerService
+ * @async
+ * @param {string} userId - The ID of the user to delete.
+ * @throws {customError} If the user is not found.
+ * @returns {Promise<void>}
+ */
+export const deleteCustomerService = async (userId: string): Promise<void> => {
   const existingCustomer = await userModel.findById(userId);
 
   if (!existingCustomer) {
@@ -22,7 +46,16 @@ export const deleteCustomerService = async (userId: string) => {
   await userModel.findByIdAndDelete(userId);
 };
 
-export const deleteProductService = async (productId: string) => {
+/**
+ * Deletes a product by product ID after validating existence.
+ *
+ * @function deleteProductService
+ * @async
+ * @param {string} productId - The ID of the product to delete.
+ * @throws {customError} If the product is not found.
+ * @returns {Promise<void>}
+ */
+export const deleteProductService = async (productId: string): Promise<void> => {
   const existingProduct = await productModel.findById(productId);
 
   if (!existingProduct) {
@@ -34,7 +67,16 @@ export const deleteProductService = async (productId: string) => {
   await productModel.findByIdAndDelete(productId);
 };
 
-export const blockUnBlockUserService = async (userId: string) => {
+/**
+ * Toggles the blocked status of a user (block/unblock).
+ *
+ * @function blockUnBlockUserService
+ * @async
+ * @param {string} userId - The ID of the user to block or unblock.
+ * @throws {customError} If the user is not found.
+ * @returns {Promise<{ status: boolean }>} The updated blocked status.
+ */
+export const blockUnBlockUserService = async (userId: string): Promise<{ status: boolean }> => {
   const existingCustomer = await userModel.findById(userId);
 
   if (!existingCustomer) {
@@ -54,7 +96,16 @@ export const blockUnBlockUserService = async (userId: string) => {
   }
 };
 
-export const enableDisableProductService = async (productId: string) => {
+/**
+ * Toggles the availability status of a product (enable/disable).
+ *
+ * @function enableDisableProductService
+ * @async
+ * @param {string} productId - The ID of the product to toggle availability.
+ * @throws {customError} If the product is not found.
+ * @returns {Promise<{ status: boolean }>} The updated availability status.
+ */
+export const enableDisableProductService = async (productId: string): Promise<{ status: boolean }> => {
   const existingProduct = await productModel.findById(productId);
 
   if (!existingProduct) {

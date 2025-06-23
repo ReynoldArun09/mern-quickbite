@@ -8,7 +8,7 @@ export default function SiteTopNonVeg() {
   const { data: products, isLoading } = useGetNonVegProductsQuery();
 
   return (
-    <ComponentWrapper>
+    <ComponentWrapper aria-busy={isLoading}>
       <ComponentTitle title="Top Non-Veg Dishes" />
       <ComponentGridContainer>
         {isLoading

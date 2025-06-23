@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
 
 import { useCreateCheckoutSession } from "@/services/stripe/stripe-mutation";
+import type { CartProduct } from "@/services/types";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "sonner";
-import type { CartProduct } from "../../../services/types";
 
 interface CartOrderSummaryProps {
   cartItems: CartProduct[];
@@ -12,10 +12,8 @@ interface CartOrderSummaryProps {
 }
 
 export default function CartOrderSummary({ cartTotal, cartItems }: CartOrderSummaryProps) {
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { mutateAsync } = useCreateCheckoutSession();
-
-  console.log(cartItems);
 
   const handleStripePayment = async () => {
     try {
@@ -55,7 +53,7 @@ export default function CartOrderSummary({ cartTotal, cartItems }: CartOrderSumm
           <span>Cart Total</span>
           <span className="text-primary">${cartTotal}</span>
         </div>
-        <Button onClick={handleStripePayment}>{user ? "Checkout" : "Please Login"}</Button>
+        <Button onClick={handleStripePayment}>{isAuthenticated ? "Checkout" : "Please Login"}</Button>
       </div>
     </div>
   );

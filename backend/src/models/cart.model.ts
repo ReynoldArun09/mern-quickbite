@@ -1,24 +1,37 @@
-import mongoose, { Document } from "mongoose";
-import { CartModelType } from "../types";
+import mongoose from "mongoose";
+import { CartType } from "../types";
 
-type CartSchemaType = CartModelType & Document;
-
-export const cartSchema = new mongoose.Schema<CartSchemaType>(
+export const cartSchema = new mongoose.Schema<CartType>(
   {
     products: [
       {
         product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
+          required: true,
         },
-        count: Number,
-        price: Number,
+        count: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+        price: {
+          type: Number,
+          required: true,
+          min: 0,
+        },
       },
     ],
-    cartTotal: Number,
+    cartTotal: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: 0,
+    },
     orderBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      unique: true,
     },
   },
   {
@@ -26,4 +39,4 @@ export const cartSchema = new mongoose.Schema<CartSchemaType>(
   }
 );
 
-export const cartModel = mongoose.model<CartSchemaType>("Cart", cartSchema);
+export const cartModel = mongoose.model<CartType>("Cart", cartSchema);

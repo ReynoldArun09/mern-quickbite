@@ -1,10 +1,10 @@
 import { useGetAllCustomerQuery, useGetAllProductsForAdminQuery } from "../../services/admin/admin-query";
+import LoadingSpinner from "../common/loading-spinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { CustomerColumns } from "./customer-column";
+import { CustomerColumns } from "./customer/customer-column";
 import { DataTable } from "./data-table";
-
-import { productColumns } from "./product-column";
+import { productColumns } from "./product/product-column";
 
 export default function ToggleTabs() {
   const { data: customers, isLoading: customerLoading } = useGetAllCustomerQuery();
@@ -24,7 +24,11 @@ export default function ToggleTabs() {
             <CardDescription>View and manage your customer base</CardDescription>
           </CardHeader>
           <CardContent>
-            <DataTable columns={CustomerColumns} data={customers ?? []} searchPlaceholder="search customers..." />
+            {customerLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <DataTable columns={CustomerColumns} data={customers ?? []} searchPlaceholder="search customers..." />
+            )}
           </CardContent>
         </Card>
       </TabsContent>
@@ -36,7 +40,11 @@ export default function ToggleTabs() {
             <CardDescription>View and manage your product inventory</CardDescription>
           </CardHeader>
           <CardContent>
-            <DataTable columns={productColumns} data={products ?? []} searchPlaceholder="search products..." />
+            {productsLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <DataTable columns={productColumns} data={products ?? []} searchPlaceholder="search products..." />
+            )}
           </CardContent>
         </Card>
       </TabsContent>

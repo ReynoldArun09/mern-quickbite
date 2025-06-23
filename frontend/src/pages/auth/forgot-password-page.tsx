@@ -5,7 +5,7 @@ export default function ForgotPasswordPage() {
   return (
     <>
       <Head title="Forgot Password" description={"forgout password page for quickbite food delivery application"} />
-      <AuthWrapper authType="RESET">forgot password</AuthWrapper>;
+      <AuthWrapper authType="RESET">forgot password</AuthWrapper>
     </>
   );
 }

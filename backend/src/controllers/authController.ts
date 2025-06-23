@@ -1,25 +1,27 @@
-import { type Request, type Response } from "express";
+import type { Request, Response } from "express";
 import { ParsedEnvVariables } from "../configs";
 import { ApiSuccessMessages, HttpStatusCode } from "../constants";
-import { signInUserService, signUpUserService } from "../services/authServices";
+import { signInService, signUpService } from "../services/authServices";
 import { customAsyncWrapper, sendApiResponse } from "../utils";
-import { signInSchema, signUpSchema } from "../validations/authSchema";
+import { signInSchema, signUpSchema } from "../validations";
 
 /**
- * signUpUserController function to handle signup user request.
- * - validates request body using zod.
- * - invokes signUpUserService.
- * - creates a user and return success message with 201 status code.
+ * Handles the request to signup user.
  *
- * @param - The request object containing user data for signup.
- * @param - The response object used to send API response.
+ * Validates request body using zod `signUpSchema` and calls `signUpService` to create user account.
  *
- * @returns A Success message with 201 status code. when user is signup is successful
+ * @function signUpController
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ * @returns Sends a response with message and HTTP 201 status.
+ *
+ * @throws {ZodError} If the request body validation fails.
  */
-export const signUpUserController = customAsyncWrapper(async (request: Request, response: Response) => {
+export const signUpController = customAsyncWrapper(async (request: Request, response: Response) => {
   const body = signUpSchema.parse(request.body);
 
-  await signUpUserService(body);
+  await signUpService(body);
 
   sendApiResponse({
     response,
@@ -29,27 +31,28 @@ export const signUpUserController = customAsyncWrapper(async (request: Request, 
 });
 
 /**
- * signInUserController function to handle user signin request.
- * - validates request body using zod.
- * - invokes signInUserService.
- * - creates cookie and attach to http request.
+ * Handles the request to signin user.
  *
- * @param The request object containing user signin details.
- * @param The response object used to send Api response and attach cookie.
+ * Validates request body using zod `signInSchema` and calls `signInService` to allow user to access account.
  *
- * @returns A Success message with 200 status code. when user is signed in
- * and returns user data to client with cookie.
+ * @function signInController
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ * @returns Sends a response with user data, message, and attach HTTP cookie with 200 status.
  */
-export const signInUserController = customAsyncWrapper(async (req: Request, response: Response) => {
-  const body = signInSchema.parse(req.body);
+export const signInController = customAsyncWrapper(async (request: Request, response: Response) => {
+  const { email, password, rememberMe } = signInSchema.parse(request.body);
 
-  const { user, token } = await signInUserService(body);
+  const { user, token } = await signInService({ email, password, rememberMe });
+
+  const cookieMaxAge = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
 
   response.cookie("accessToken", token, {
     httpOnly: true,
     secure: ParsedEnvVariables.NODE_ENV === "production",
     sameSite: ParsedEnvVariables.NODE_ENV === "production" ? "none" : "strict",
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: cookieMaxAge,
   });
 
   sendApiResponse({
@@ -61,12 +64,17 @@ export const signInUserController = customAsyncWrapper(async (req: Request, resp
 });
 
 /**
- * signOutUserController function to handle user signout request.
- * - clear cookie
+ * Handles the request to signout user.
  *
- * @returns A success message response indicating user has been signed out.
+ * clear's cookie.
+ *
+ * @function signOutController
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ * @returns Sends a response with message and HTTP 200 status.
  */
-export const signOutUserController = customAsyncWrapper(async (req: Request, response: Response) => {
+export const signOutController = customAsyncWrapper(async (req: Request, response: Response) => {
   response.clearCookie("accessToken");
 
   sendApiResponse({
@@ -77,15 +85,17 @@ export const signOutUserController = customAsyncWrapper(async (req: Request, res
 });
 
 /**
- * verifyUserController function to handle user verification request.
- * This function retrieves authenticated user from the request context
- * and return the user data as response.
+ * Handles the request to verify user.
  *
- * @param req - The request object which contains the authenticated user data in its context.
- * @param res - The response object which is used to send API response.
- * @returns A Success response containing the authenticated user data
+ * Receive's user data from context attached from auth middleware.
+ *
+ * @function verifyController
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ * @returns Sends a response with user data and HTTP 200 status.
  */
-export const verifyUserController = customAsyncWrapper(async (request: Request, response: Response) => {
+export const verifyController = customAsyncWrapper(async (request: Request, response: Response) => {
   const user = request.ctx;
 
   sendApiResponse({

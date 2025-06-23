@@ -5,7 +5,7 @@ import { HttpStatusCode } from "../constants";
 import { clearCartAfterPaymentService } from "../services/paymentService";
 import { sendApiResponse } from "../utils";
 import { customAsyncWrapper } from "../utils/customAsyncWrapper";
-import { cartItemsSchema } from "../validations/paymentSchema";
+import { cartItemsSchema } from "../validations";
 
 const stripe = new Stripe(ParsedEnvVariables.STRIPE_KEY);
 
@@ -57,6 +57,18 @@ export const createCheckoutSessionApi = customAsyncWrapper(async (request: Reque
   });
 });
 
+/**
+ * Handles the request to clear cart items after successful payment.
+ *
+ * Calls `clearCartAfterPaymentService` clears the cart of logged in user.
+ *
+ * @function clearCartAfterPayment
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ *
+ * @returns Send a response of HTTP 200 status.
+ */
 export const clearCartAfterPayment = customAsyncWrapper(async (request: Request, response: Response) => {
   const userId = request.ctx._id;
 

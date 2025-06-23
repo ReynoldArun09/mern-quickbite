@@ -8,17 +8,37 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Skeleton } from "@/components/ui/skeleton";
+import useAuth from "@/hooks/useAuth";
 import useDebounce from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
+import { useAddToCartMutation } from "@/services/cart/cart-mutation";
 import { useSearchProductsQuery } from "@/services/products/products-query";
 import { SearchIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function SearchCommand() {
   const [openCommand, setOpenCommand] = useState(false);
   const [query, setQuery] = useState("");
   const debounceValue = useDebounce(query, 1000);
   const { data: products, isLoading } = useSearchProductsQuery(debounceValue);
+  const { isPending, mutate: addToCart } = useAddToCartMutation();
+  const { isAuthenticated } = useAuth();
+
+  const handleAddToCart = useCallback(
+    (itemId: string) => {
+      if (!isAuthenticated) {
+        toast.info("You need to login to add product in cart.");
+        return;
+      }
+
+      addToCart({
+        productId: itemId,
+        count: 1,
+      });
+    },
+    [addToCart, isAuthenticated]
+  );
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -67,10 +87,15 @@ export default function SearchCommand() {
           ) : (
             <CommandGroup>
               {products?.map((group) => (
-                <CommandItem key={group?.name} className="mr-20 flex h-fit justify-between" value={group.name}>
-                  <img src={group?.image} alt={group.name} className="h-12 w-20" />
-                  <span className="truncate font-bold">{group?.name}</span>
-                  <span className="text-primary font-bold">$ {group?.price}</span>
+                <CommandItem key={group?._id} className="flex h-fit items-center justify-between" value={group.name}>
+                  <img src={group?.image} alt={group.name} className="h-12 w-20 object-cover" />
+                  <div className="flex flex-col flex-grow px-2">
+                    <span className="truncate font-bold">{group?.name}</span>
+                    <span className="text-primary font-bold">$ {group?.price}</span>
+                  </div>
+                  <Button onClick={() => handleAddToCart(group._id)} disabled={isPending}>
+                    Add
+                  </Button>
                 </CommandItem>
               ))}
             </CommandGroup>

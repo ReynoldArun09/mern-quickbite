@@ -1,16 +1,3 @@
-export type GeneralResponseType = {
-  message: string;
-  success: boolean;
-};
-
-export type siginResponse = {
-  data: UserType;
-} & GeneralResponseType;
-
-export type VerifyResponseType = {
-  data: UserType;
-} & Omit<GeneralResponseType, "message">;
-
 export type UserType = {
   email: string;
   _id: string;
@@ -33,6 +20,7 @@ export type ProductType = {
   vegetarian: boolean;
   discount: number;
   ingredients: string[];
+  originalPrice: number;
 };
 
 export type CartResponse = {
@@ -52,3 +40,25 @@ export type CartPayload = {
   count: number;
   productId: string;
 };
+
+/** auth response types */
+export type userData = {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  mobile: string;
+  role: "user" | "admin";
+  blocked: boolean;
+};
+
+export type signInApiResponse = {
+  success: string;
+  message: string;
+  data: userData;
+};
+
+export type verifyResponseType = userData;
+
+export type signOutApiResponse = Omit<signInApiResponse, "data">;
+export type signUpApiResponse = Omit<signInApiResponse, "data">;

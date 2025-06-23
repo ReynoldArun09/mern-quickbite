@@ -8,7 +8,7 @@ export default function SiteRecentlyAdded() {
   const { data: products, isLoading } = useGetRecentlyAddedProductsQuery();
 
   return (
-    <ComponentWrapper>
+    <ComponentWrapper aria-busy={isLoading}>
       <ComponentTitle title="Recently Added Dishes" />
       <ComponentGridContainer>
         {isLoading

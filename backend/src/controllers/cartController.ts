@@ -7,22 +7,22 @@ import {
   updateProductCountService,
 } from "../services/cartServices";
 import { customAsyncWrapper, sendApiResponse } from "../utils";
-import { cartSchema } from "../validations/cartSchema";
+import { cartSchema } from "../validations";
 
 /**
- * getCartItemsForUser function to handle get cart items of user request.
- * - Retrieve userId from request context.
- * - invoke getCartItemsForUserService
- * - fetch's the array of cartitems of user from database and return's with 200 status code.
+ * Handles the request to retrieve cart items of specific user ID.
  *
- * @param The request object containing the userdata.
- * @param The response object used to send API response.
+ * Calls the `getCartItemsForUserService` to get cart items of logged in user.
  *
- * @returns A success message and cartItems with status 200.
+ * @function getCartItemsForUser
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ *
+ * @returns Send a response with list of cart items and HTTP 200 status.
  */
 export const getCartItemsForUser = customAsyncWrapper(async (request: Request, response: Response) => {
-  const ctx = request.ctx;
-  const userId = ctx._id;
+  const userId = request.ctx._id;
   const { cartItems } = await getCartItemsForUserService(userId);
 
   sendApiResponse({
@@ -33,22 +33,44 @@ export const getCartItemsForUser = customAsyncWrapper(async (request: Request, r
 });
 
 /**
- * createUserCart function to handle create user cart request.
- * - Retrieve userId from request context.
- * - receive's productId and count from request body.
- * - validates request body using zod.
- * - invoke's createUserService function.
+ * Handles the request create a user cart.
  *
- * @param The request object containing the userdata, productId and count.
- * @param The response object used to send API response.
+ * Validates with body data with zod and Calls `createUserCartservice` to create cart.
  *
- * @returns A Success message with 200 status code.
+ * @function getCartItemsForUser
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ *
+ * @returns Send a response of HTTP 201 status.
  */
 export const createUserCart = customAsyncWrapper(async (request: Request, response: Response) => {
-  const ctx = request.ctx;
-  const userId = ctx._id;
+  const userId = request.ctx._id;
   const { productId, count } = cartSchema.parse(request.body);
   await createUserCartservice(productId, count, userId);
+
+  sendApiResponse({
+    response,
+    statusCode: HttpStatusCode.CREATED,
+  });
+});
+
+/**
+ * Handles the request to remove item from cart of logged in user.
+ *
+ * Calls `removeFromCartService` to remove specific product by product ID.
+ *
+ * @function removeFromCart
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ *
+ * @returns Sends a response of 200 HTTP Status.
+ */
+export const removeFromCart = customAsyncWrapper(async (request: Request, response: Response) => {
+  const userId = request.ctx._id;
+  const { productId } = request.params;
+  await removeFromCartService(productId, userId);
 
   sendApiResponse({
     response,
@@ -57,32 +79,19 @@ export const createUserCart = customAsyncWrapper(async (request: Request, respon
 });
 
 /**
- * removeFromCart function to handle remove from cart request.
- * - Retrieve userId from request context.
- * - Retrieve productId from request params.
- * - validate productId if valid or not using zod.
- * - invoke removeFromCartService
+ * Handles the request udpate product count in cart of logged in user.
  *
- * @param The request object containing the userdata and productId.
- * @param The response object used to send API response.
+ * Calls `updateProductCountService` to update product count in cart.
  *
- * @returns A Success message with 200 status code.
+ * @function updateProductCount
+ * @async
+ * @param {Request} request - Express request object.
+ * @param {Response} response - Express response object.
+ *
+ * @returns Send a response of HTTP 200 status.
  */
-export const removeFromCart = customAsyncWrapper(async (request: Request, response: Response) => {
-  const ctx = request.ctx;
-  const userId = ctx._id;
-  const { productId } = request.params;
-  await removeFromCartService(String(productId), userId);
-
-  sendApiResponse({
-    response,
-    statusCode: HttpStatusCode.OK,
-  });
-});
-
 export const updateProductCount = customAsyncWrapper(async (request: Request, response: Response) => {
-  const ctx = request.ctx;
-  const userId = ctx._id;
+  const userId = request.ctx._id;
   const { productId, count } = cartSchema.parse(request.body);
 
   await updateProductCountService(productId, count, userId);

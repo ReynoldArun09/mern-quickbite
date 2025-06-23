@@ -1,7 +1,8 @@
 import request from "supertest";
 import app from "../app";
 import { ApiErrorMessages, ApiSuccessMessages, GlobalErrorMessages, HttpStatusCode } from "../constants";
-import { signInUserService, signUpUserService } from "../services/authServices";
+
+import { signInService, signUpService } from "../services/authServices";
 import { customError } from "../utils";
 
 export const inValidUser = {
@@ -37,7 +38,7 @@ describe("signup controller", () => {
   });
 
   it("should return 400 status if user already exist", async () => {
-    (signUpUserService as jest.Mock).mockRejectedValueOnce(
+    (signUpService as jest.Mock).mockRejectedValueOnce(
       new customError(ApiErrorMessages.USER_ALREADY_EXISTS, HttpStatusCode.BAD_REQUEST)
     );
     const response = await request(app).post("/api/v1/auth/signup").send(validUser);
@@ -46,7 +47,7 @@ describe("signup controller", () => {
   });
 
   it("should create new user successfully", async () => {
-    (signUpUserService as jest.Mock).mockResolvedValueOnce({});
+    (signUpService as jest.Mock).mockResolvedValueOnce({});
     const response = await request(app).post("/api/v1/auth/signup").send(validUser);
 
     expect(response.status).toBe(201);
@@ -73,7 +74,7 @@ describe("sign in", () => {
   });
 
   it("should return 400 if user not found in database", async () => {
-    (signInUserService as jest.Mock).mockRejectedValueOnce(
+    (signInService as jest.Mock).mockRejectedValueOnce(
       new customError(ApiErrorMessages.USER_NOT_FOUND, HttpStatusCode.BAD_REQUEST)
     );
     const response = await request(app).post("/api/v1/auth/signin").send({
@@ -85,7 +86,7 @@ describe("sign in", () => {
   });
 
   it("should return 400 if password is incorrect", async () => {
-    (signInUserService as jest.Mock).mockRejectedValueOnce(
+    (signInService as jest.Mock).mockRejectedValueOnce(
       new customError(ApiErrorMessages.USER_NOT_FOUND, HttpStatusCode.BAD_REQUEST)
     );
     const response = await request(app).post("/api/v1/auth/signin").send({
@@ -97,7 +98,7 @@ describe("sign in", () => {
   });
 
   it("should sign in user", async () => {
-    (signInUserService as jest.Mock).mockResolvedValueOnce({});
+    (signInService as jest.Mock).mockResolvedValueOnce({});
     const response = await request(app).post("/api/v1/auth/signin").send({
       email: validUser.email,
       password: validUser.password,

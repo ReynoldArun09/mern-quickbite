@@ -7,7 +7,6 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { HelmetProvider } from "react-helmet-async";
 import { Toaster } from "sonner";
-import { AuthProvider } from "../context/auth-provider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,13 +23,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <ErrorBoundary fallback={<ErrorFallback />}>
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <ThemeProvider defaultTheme="dark">
-                {children}
-                <Toaster richColors closeButton theme="dark" />
-                {import.meta.env.VITE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} />}
-              </ThemeProvider>
-            </AuthProvider>
+            <ThemeProvider defaultTheme="dark">
+              {children}
+              <Toaster richColors closeButton theme="dark" />
+              {import.meta.env.VITE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} />}
+            </ThemeProvider>
           </QueryClientProvider>
         </HelmetProvider>
       </ErrorBoundary>

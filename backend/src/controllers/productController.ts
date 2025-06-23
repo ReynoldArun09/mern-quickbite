@@ -109,8 +109,6 @@ export const getRecentlyAddedProducts = customAsyncWrapper(async (request: Reque
 export const searchProducts = customAsyncWrapper(async (request: Request, response: Response) => {
   const { searchTerm } = searchParamSchema.parse(request.params);
 
-  console.log(searchTerm);
-
   const products = await searchProductsService(searchTerm);
 
   sendApiResponse({

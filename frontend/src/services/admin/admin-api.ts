@@ -1,32 +1,33 @@
 import { axiosInstance } from "../axios";
-import type { ProductType, UserType } from "../types";
+import type { AdminCustomerResponse, AdminProductsResponse } from "../types";
+import { ADMIN_ENDPOINTS } from "./admin-constants";
 
-export const getAllProductsForAdminApi = async (): Promise<ProductType[]> => {
-  const response = await axiosInstance.get("admin/get-products");
+export const getAllProductsForAdminApi = async (): Promise<AdminProductsResponse> => {
+  const response = await axiosInstance.get(ADMIN_ENDPOINTS.GET_PRODUCTS_ADMIN);
   return response.data.data;
 };
 
-export const getAllCustomersApi = async (): Promise<UserType[]> => {
-  const response = await axiosInstance.get("admin/get-customers");
+export const getAllCustomersApi = async (): Promise<AdminCustomerResponse> => {
+  const response = await axiosInstance.get(ADMIN_ENDPOINTS.GET_CUSTOMERS);
   return response.data.data;
 };
 
-export const deleteProduct = async (productId: string) => {
-  const response = await axiosInstance.delete(`admin/delete/${productId}`);
-  return response.data.data;
+export const deleteProductApi = async (productId: string): Promise<{ message: string; success: boolean }> => {
+  const response = await axiosInstance.delete(ADMIN_ENDPOINTS.DLETE_PRODUCT(productId));
+  return response.data;
 };
 
-export const deleteCustomer = async (userId: string) => {
-  const response = await axiosInstance.delete(`admin/user-delete/${userId}`);
-  return response.data.data;
+export const deleteCustomerApi = async (userId: string): Promise<{ message: string; success: boolean }> => {
+  const response = await axiosInstance.delete(ADMIN_ENDPOINTS.DELETE_CUSTOMER(userId));
+  return response.data;
 };
 
-export const enableDisableProduct = async (productId: string) => {
-  const response = await axiosInstance.put(`admin/enable-disable/${productId}`);
-  return response.data.data;
+export const enableDisableProductApi = async (productId: string): Promise<{ message: string; success: boolean }> => {
+  const response = await axiosInstance.put(ADMIN_ENDPOINTS.ENABLE_DISABLE_PRODUCT(productId));
+  return response.data;
 };
 
-export const blockUnblockCustomer = async (userId: string) => {
-  const response = await axiosInstance.put(`admin/block-unblock-user/${userId}`);
-  return response.data.data;
+export const blockUnblockCustomerApi = async (userId: string): Promise<{ message: string; success: boolean }> => {
+  const response = await axiosInstance.put(ADMIN_ENDPOINTS.BLOCKANDUNBLOCK(userId));
+  return response.data;
 };

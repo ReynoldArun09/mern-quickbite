@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { blockUnblockCustomer, deleteCustomer, deleteProduct, enableDisableProduct } from "./admin-api";
+import { blockUnblockCustomerApi, deleteCustomerApi, deleteProductApi, enableDisableProductApi } from "./admin-api";
+import { ADMIN_MUTATION_KEYS, ADMIN_QUERY_KEYS } from "./admin-constants";
 
 export function useDeleteCustomerMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["admin-delete-customer-key"],
-    mutationFn: deleteCustomer,
+    mutationKey: ADMIN_MUTATION_KEYS.DELETE_CUSTOMER,
+    mutationFn: deleteCustomerApi,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["admin-get-customer-key"] });
+      await queryClient.invalidateQueries({ queryKey: ADMIN_QUERY_KEYS.ADMIN_CUSTOMERS });
     },
   });
 }
@@ -15,10 +16,10 @@ export function useDeleteCustomerMutation() {
 export function useDeleteProductMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["delete-product-key"],
-    mutationFn: deleteProduct,
+    mutationKey: ADMIN_MUTATION_KEYS.DELETE_PRODUCT,
+    mutationFn: deleteProductApi,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["admin-get-products-key"] });
+      await queryClient.invalidateQueries({ queryKey: ADMIN_QUERY_KEYS.ADMIN_PRODUCTS });
     },
   });
 }
@@ -26,10 +27,10 @@ export function useDeleteProductMutation() {
 export function useEnableDisableProductMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["admin-enDis-product-key"],
-    mutationFn: enableDisableProduct,
+    mutationKey: ADMIN_MUTATION_KEYS.ENABLE_DISABLE_PRODUCT,
+    mutationFn: enableDisableProductApi,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["admin-get-products-key"] });
+      await queryClient.invalidateQueries({ queryKey: ADMIN_QUERY_KEYS.ADMIN_PRODUCTS });
     },
   });
 }
@@ -37,10 +38,10 @@ export function useEnableDisableProductMutation() {
 export function useBlockUnBlockCustomerMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["admin-bckUbck-customer-key"],
-    mutationFn: blockUnblockCustomer,
+    mutationKey: ADMIN_MUTATION_KEYS.BLOCK_UNBLOCK_CUSTOMER,
+    mutationFn: blockUnblockCustomerApi,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["admin-get-customer-key"] });
+      await queryClient.invalidateQueries({ queryKey: ADMIN_QUERY_KEYS.ADMIN_CUSTOMERS });
     },
   });
 }

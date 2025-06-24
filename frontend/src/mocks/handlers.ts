@@ -107,4 +107,117 @@ export const handlers = [
       });
     }
   }),
+
+  http.get("/api/v1/admin/get-products", async () => {
+    const products = [
+      { _id: 1, name: "Product A", price: 10.99 },
+      { _id: 2, name: "Product B", price: 19.99 },
+      { _id: 3, name: "Product C", price: 29.99 },
+    ];
+    try {
+      return HttpResponse.json({ data: products });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+  http.get("/api/v1/admin/get-customers", async () => {
+    const customers = [
+      { _id: 1, fristname: "customer A", email: "customera@example.com" },
+      { _id: 2, firstname: "customer B", email: "customerb@example.com" },
+    ];
+    try {
+      return HttpResponse.json({ data: customers });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+  http.delete("/api/v1/admin/delete/:productId", async ({ params }) => {
+    try {
+      const { productId } = params;
+      const message = "Product not found.";
+      if (productId === "456") {
+        return HttpResponse.json(message);
+      }
+      return HttpResponse.json({
+        message: "Product deleted!",
+        success: true,
+      });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+  http.delete("/api/v1/admin/user-delete/:userId", async ({ params }) => {
+    try {
+      const { userId } = params;
+
+      if (userId === "456") {
+        return HttpResponse.json({
+          message: "failed to delete customer",
+          success: false,
+        });
+      }
+      return HttpResponse.json({
+        message: "customer deleted!",
+        success: true,
+      });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+
+  http.put("/api/v1/admin/enable-disable/:productId", async ({ params }) => {
+    try {
+      const { productId } = params;
+
+      if (productId === "456") {
+        return HttpResponse.json({
+          message: "Product not found.",
+          success: false,
+        });
+      }
+      return HttpResponse.json({
+        message: "Product has been disabled.",
+        success: true,
+      });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+
+  http.put("/api/v1/admin/block-unblock-user/:userId", async ({ params }) => {
+    try {
+      const { userId } = params;
+
+      if (userId === "456") {
+        return HttpResponse.json({
+          message: "Invalid customer id",
+          success: false,
+        });
+      }
+      return HttpResponse.json({
+        message: "customer blocked successfully!",
+        success: true,
+      });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
 ];

@@ -62,3 +62,8 @@ export type verifyResponseType = userData;
 
 export type signOutApiResponse = Omit<signInApiResponse, "data">;
 export type signUpApiResponse = Omit<signInApiResponse, "data">;
+
+/** product response types */
+
+export type AdminProductsResponse = ProductType[];
+export type AdminCustomerResponse = UserType[];

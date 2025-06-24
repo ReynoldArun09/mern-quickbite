@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-import { GlobalErrorMessages, HttpStatusCode } from "../constants";
+import { HttpStatusCode } from "../constants";
 import { customError } from "../utils";
 
-export const validateUserIdParam = (request: Request, response: Response, next: NextFunction) => {
-  const { userId } = request.params;
+export const ValidateObjectParamId =
+  (paramName: string) => (request: Request, response: Response, next: NextFunction) => {
+    const paramValue = request.params[paramName];
 
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new customError(GlobalErrorMessages.UNAUTHORIZED, HttpStatusCode.UNAUTHORIZED);
-  }
-
-  next();
-};
+    if (!mongoose.Types.ObjectId.isValid(paramValue)) {
+      throw new customError(`${paramName} is not a valid MongoDB ObjectId`, HttpStatusCode.UNAUTHORIZED);
+    }
+    next();
+  };

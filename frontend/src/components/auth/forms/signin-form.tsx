@@ -4,6 +4,7 @@ import { useSignInMutation } from "@/services/auth/auth-mutation";
 import { signInSchema, type signInSchemaType } from "@/validations/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Checkbox } from "../../ui/checkbox";
 import AuthSubmitButton from "../auth-submit-button";
 
 const authType = "SIGN_IN";
@@ -14,6 +15,7 @@ export default function SignInForm() {
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
@@ -49,6 +51,23 @@ export default function SignInForm() {
                 <Input placeholder="Enter your password..." aria-label="Password" type="password" {...field} />
               </FormControl>
               <FormMessage className="text-red-500" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="rememberMe"
+          render={({ field }) => (
+            <FormItem className="flex items-center gap-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  aria-label="Remember me"
+                  onCheckedChange={field.onChange}
+                  id="rememberMe"
+                />
+              </FormControl>
+              <FormLabel>Remember Me</FormLabel>
             </FormItem>
           )}
         />

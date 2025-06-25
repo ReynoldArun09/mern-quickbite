@@ -1,10 +1,23 @@
 import { http, HttpResponse } from "msw";
+import type { CartPayload } from "../services/types";
 import type { signInSchemaType, signUpSchemaType } from "../validations/auth-schema";
 
 async function parseJsonBody<T>(request: Request): Promise<T> {
   const data = (await request.json()) as T;
   return data;
 }
+
+const userCart = [
+  { _id: "1", name: "Product A", quantity: 2, price: 10.99 },
+  { _id: "2", name: "Product B", quantity: 1, price: 19.99 },
+];
+
+const allProducts = [
+  { _id: "1", name: "Veg Pizza", category: "veg", price: 12.99, createdAt: "2025-06-23" },
+  { _id: "2", name: "Chicken Burger", category: "nonveg", price: 10.49, createdAt: "2025-06-24" },
+  { _id: "3", name: "Paneer Wrap", category: "veg", price: 8.99, createdAt: "2025-06-22" },
+  { _id: "4", name: "Mutton Kebab", category: "nonveg", price: 14.99, createdAt: "2025-06-25" },
+];
 
 export const handlers = [
   http.post("/api/v1/auth/signup", async ({ request }) => {
@@ -219,5 +232,84 @@ export const handlers = [
         success: false,
       });
     }
+  }),
+  http.get("/api/v1/cart/get-cart", async () => {
+    try {
+      return HttpResponse.json({
+        data: userCart,
+      });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+  http.post("/api/v1/cart/add-cart", async ({ request }) => {
+    try {
+      const result = await parseJsonBody<CartPayload>(request);
+
+      if (result.productId !== "1") {
+        return HttpResponse.json({
+          data: "Product not found",
+        });
+      }
+
+      return HttpResponse.json({
+        data: "Item added to cart",
+      });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+  http.post("/api/v1/cart/remove-product/:productId", async ({ params }) => {
+    try {
+      const { productId } = params;
+
+      if (productId !== "1") {
+        return HttpResponse.json({
+          data: "Product not found",
+        });
+      }
+
+      return HttpResponse.json({
+        data: "Item removed from cart",
+      });
+    } catch {
+      return HttpResponse.json({
+        message: "Internal Server error",
+        success: false,
+      });
+    }
+  }),
+  http.get("/api/v1/product/all-products", async () => {
+    return HttpResponse.json({
+      data: allProducts,
+    });
+  }),
+  http.get("/api/v1/product/veg-products", async () => {
+    const veg = allProducts.filter((product) => product.category === "veg");
+    return HttpResponse.json({
+      data: veg,
+    });
+  }),
+  http.get("/api/v1/product/nonveg-products", async () => {
+    const nonveg = allProducts.filter((product) => product.category === "nonveg");
+    return HttpResponse.json({
+      data: nonveg,
+    });
+  }),
+
+  http.get("/api/v1/product/search/:searchTerm", async ({ params }) => {
+    const { searchTerm } = params;
+    const matched = allProducts.filter((product) =>
+      product.name.toLowerCase().includes((searchTerm as string).toLowerCase())
+    );
+    return HttpResponse.json({
+      data: matched,
+    });
   }),
 ];

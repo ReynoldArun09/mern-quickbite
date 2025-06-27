@@ -1,7 +1,9 @@
 import { type Request, type Response } from "express";
 import { ApiSuccessMessages, HttpStatusCode } from "../constants";
+import { uploadImage } from "../helpers";
 import {
   blockUnBlockUserService,
+  createProductService,
   deleteCustomerService,
   deleteProductService,
   enableDisableProductService,
@@ -9,6 +11,7 @@ import {
   getAllProductsForAdminService,
 } from "../services/adminServices";
 import { customAsyncWrapper, sendApiResponse } from "../utils";
+import { createProductSchema } from "../validations";
 
 /**
  * Handles the request to retrieve all customers except admin.
@@ -146,5 +149,18 @@ export const blockUnBlockUser = customAsyncWrapper(async (request: Request, resp
     response,
     statusCode: HttpStatusCode.OK,
     message: status ? ApiSuccessMessages.USER_BLOCKED : ApiSuccessMessages.USER_UNBLOCKED,
+  });
+});
+
+export const createProduct = customAsyncWrapper(async (request: Request, response: Response) => {
+  const body = createProductSchema.parse(request.body);
+
+  const imageUrl = await uploadImage(request.file as Express.Multer.File);
+
+  await createProductService(body, imageUrl);
+
+  sendApiResponse({
+    response,
+    statusCode: HttpStatusCode.OK,
   });
 });

@@ -8,6 +8,8 @@ import { corsOptions } from "./configs";
 import { errorMiddleware } from "./middlewares";
 import { adminRoutes, authRoutes, cartRoutes, paymentRoutes, productRoutes } from "./routes";
 
+import "./lib/bullmq/workers/email.worker";
+
 /** initialize express app */
 const app: Application = express();
 const base_url = "/api/v1";

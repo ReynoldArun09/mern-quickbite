@@ -9,6 +9,7 @@ const SignUpPage = lazy(() => import("@/pages/auth/signup-page"));
 const ForgotPasswordPage = lazy(() => import("@/pages/auth/forgot-password-page"));
 const CartPage = lazy(() => import("@/pages/site/cart-page"));
 const MenuPage = lazy(() => import("@/pages/site/menu-page"));
+const ResetPasswordPage = lazy(() => import("@/pages/auth/reset-password.page"));
 const AdminDashboardPage = lazy(() => import("@/pages/admin/admin-dashboard-page"));
 
 export const baseRoutePaths = [
@@ -19,7 +20,8 @@ export const baseRoutePaths = [
 export const authenticationRoutePaths = [
   { path: AUTH_ROUTES.SIGN_IN, element: <SignInPage /> },
   { path: AUTH_ROUTES.SIGN_UP, element: <SignUpPage /> },
-  { path: AUTH_ROUTES.RESET, element: <ForgotPasswordPage /> },
+  { path: AUTH_ROUTES.RESET, element: <ResetPasswordPage /> },
+  { path: AUTH_ROUTES.FORGOT, element: <ForgotPasswordPage /> },
 ];
 
 export const protectedRoutesPaths = [

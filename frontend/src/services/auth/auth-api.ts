@@ -22,3 +22,13 @@ export const signOutApi = async (): Promise<signOutApiResponse> => {
   const response = await axiosInstance.post(AUTH_ENDPOINTS.SIGN_OUT);
   return response.data;
 };
+
+export const forgotPasswordApi = async (email: { email: string }) => {
+  const response = await axiosInstance.post(AUTH_ENDPOINTS.FORGOT_PASSWORD, email);
+  return response.data;
+};
+
+export const resetPasswordApi = async (token: string, password: string) => {
+  const response = await axiosInstance.post(AUTH_ENDPOINTS.UPDATE_PASSWORD(token), { password });
+  return response.data;
+};

@@ -21,5 +21,24 @@ export const signInSchema = z.object({
   rememberMe: z.boolean(),
 });
 
+export const UpdateSchema = z
+  .object({
+    password: z
+      .string({ required_error: "Password is required" })
+      .min(6, { message: "Password must be 6 or more characters long" })
+      .max(20, { message: "Password must be 16 or fewer characters long" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export const emailSChema = z.object({
+  email: z.string({ required_error: "Email is required" }).email({ message: "Invalid email address" }),
+});
+
+export type emailType = z.infer<typeof emailSChema>;
 export type signInSchemaType = z.infer<typeof signInSchema>;
 export type signUpSchemaType = z.infer<typeof signUpSchema>;
+export type UpdateSchemaType = z.infer<typeof UpdateSchema>;

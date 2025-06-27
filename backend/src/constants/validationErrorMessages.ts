@@ -6,5 +6,6 @@ export enum ValidationMessages {
   CLOUDINARY_API_KEY_REQUIRED = "Cloudinary API Key is required to connect to the service. 🔑",
   CLOUDINARY_API_SECRET_REQUIRED = "Cloudinary API Secret is required for secure access. 🔐",
   SALT_REQUIRED = "Salt is required for secure encryption. Please provide it. 🧂",
-  STRIPE_KEY_REQUIRED = "sTRIPE API Key is required to connect to the service. 🔑",
+  STRIPE_KEY_REQUIRED = "STRIPE API Key is required to connect to the service. 🔑",
+  REDIS_URL = "Redis url is required to connect to upstash.",
 }

@@ -6,7 +6,8 @@ export const BASE_ROUTE = {
 export const AUTH_ROUTES = {
   SIGN_IN: "/auth/sign-in",
   SIGN_UP: "/auth/sign-up",
-  RESET: "/auth/forgot-password",
+  FORGOT: "/auth/forgot-password",
+  RESET: "/auth/reset-password/:token",
 };
 
 export const PROTECTED_ROUTES = {

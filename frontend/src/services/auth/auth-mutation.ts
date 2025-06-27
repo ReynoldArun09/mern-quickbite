@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { signInApi, signOutApi, signUpApi } from "./auth-api";
+import { forgotPasswordApi, resetPasswordApi, signInApi, signOutApi, signUpApi } from "./auth-api";
 import { AUTH_MUTATION_KEYS, AUTH_QUERY_KEYS } from "./auth-constants";
 
 export function useSignUpMutation() {
@@ -51,6 +51,34 @@ export function useSignOutMutation() {
       queryClient.removeQueries({ queryKey: AUTH_QUERY_KEYS.VERIFY_KEY });
       queryClient.clear();
       toast.success(data.message || "Signed Out successfully");
+    },
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
+}
+
+export function useForgoutPasswordMutation() {
+  return useMutation({
+    mutationKey: AUTH_MUTATION_KEYS.FORGOT_PASSWORD_KEY,
+    mutationFn: forgotPasswordApi,
+    onSuccess: async (data) => {
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
+}
+
+export function useUpdatePasswordMutation(token: string) {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationKey: AUTH_MUTATION_KEYS.FORGOT_PASSWORD_KEY,
+    mutationFn: (password: string) => resetPasswordApi(token, password),
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      navigate("/auth/sign-in");
     },
     onError: (error) => {
       toast.error(error?.message);

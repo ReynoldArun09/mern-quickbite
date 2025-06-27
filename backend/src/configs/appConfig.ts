@@ -20,6 +20,8 @@ const EnvVariables = z.object({
   CORS_ORIGIN: z.string().min(1, { message: ValidationMessages.CORS_ORIGIN_REQUIRED }),
   SALT: z.string().min(2, { message: ValidationMessages.SALT_REQUIRED }),
   STRIPE_KEY: z.string().min(2, { message: ValidationMessages.STRIPE_KEY_REQUIRED }),
+  REDIS_URL: z.string().min(5, { message: ValidationMessages.REDIS_URL }),
+  RESEND_API_KEY: z.string().min(1, { message: "RESEND_API_KEY is required" }),
 });
 
 type EnvVariablesType = z.infer<typeof EnvVariables>;

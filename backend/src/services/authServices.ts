@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { ParsedEnvVariables } from "../configs";
 import { ApiErrorMessages, HttpStatusCode } from "../constants";
+import { emailQueue } from "../lib/bullmq/queues/email.queue";
 import { userModel } from "../models";
 import { type UserType } from "../types";
 import { customError } from "../utils";
@@ -53,7 +55,7 @@ export const signInService = async ({
   password,
   rememberMe,
 }: signInSchemaType): Promise<{ user: Omit<UserType, "password">; token: string }> => {
-  const existingUser = await userModel.findOne({ email });
+  let existingUser = await userModel.findOne({ email });
 
   if (!existingUser) {
     throw new customError(ApiErrorMessages.USER_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
@@ -80,4 +82,59 @@ export const signInService = async ({
   });
 
   return { user: userData, token };
+};
+
+export const forgotPasswordService = async (email: string) => {
+  const existingUser = await userModel.findOne({ email });
+
+  if (!existingUser) {
+    throw new customError(ApiErrorMessages.USER_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
+  }
+
+  const token = crypto.randomBytes(20).toString("hex");
+  const resetTokenExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
+
+  existingUser.resetPasswordToken = token;
+  existingUser.resetPasswordExpiresAt = resetTokenExpiresAt;
+
+  await existingUser.save();
+
+  await emailQueue.add(
+    "FORGOT_PASSWORD",
+    { email: existingUser.email, token },
+    {
+      removeOnComplete: true,
+    }
+  );
+};
+
+export const resetPasswordService = async (token: string, password: string) => {
+  let existingUser = await userModel.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpiresAt: { $gt: Date.now() },
+  });
+
+  if (!existingUser) {
+    throw new customError(ApiErrorMessages.USER_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  existingUser.password = hashedPassword;
+  existingUser.resetPasswordExpiresAt = null;
+  existingUser.resetPasswordToken = null;
+  await existingUser.save();
+
+  await emailQueue.add(
+    "RESET_PASSWORD_SUCCESS",
+    { email: existingUser.email },
+    {
+      attempts: 2,
+      backoff: {
+        type: "exponential",
+        delay: 5000,
+      },
+      removeOnComplete: true,
+    }
+  );
 };

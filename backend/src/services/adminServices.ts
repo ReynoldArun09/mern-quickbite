@@ -1,7 +1,9 @@
+import { v2 as cloudinary } from "cloudinary";
 import { ApiErrorMessages, HttpStatusCode } from "../constants";
 import { productModel, userModel } from "../models";
 import { ProductType, UserType } from "../types";
 import { customError } from "../utils";
+import { createProductSchemaType } from "../validations";
 
 /**
  * Retrieves all users with the role 'user' (i.e., non-admin customers).
@@ -62,7 +64,10 @@ export const deleteProductService = async (productId: string): Promise<void> => 
     throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
   }
 
-  // todo delete from cloudinary
+  if (existingProduct.image) {
+    const imageId = existingProduct.image.split("/").pop()?.split(".")[0] as string;
+    await cloudinary.uploader.destroy(imageId);
+  }
 
   await productModel.findByIdAndDelete(productId);
 };
@@ -123,4 +128,28 @@ export const enableDisableProductService = async (productId: string): Promise<{ 
     });
     return { status: true };
   }
+};
+
+export const createProductService = async (body: createProductSchemaType, imageUrl: string) => {
+  const { name, description, price, category, discount, ingredients, starRating, originalPrice } = body;
+
+  const existingProduct = await productModel.find({ name });
+
+  if (!existingProduct) {
+    throw new customError(ApiErrorMessages.PRODUCT_NOT_FOUND, HttpStatusCode.BAD_REQUEST);
+  }
+
+  const newFood = new productModel({
+    name,
+    description,
+    price,
+    category,
+    originalPrice,
+    discount,
+    ingredients,
+    starRating,
+    image: imageUrl,
+  });
+
+  await newFood.save();
 };

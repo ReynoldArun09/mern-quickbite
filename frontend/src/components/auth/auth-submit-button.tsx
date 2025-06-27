@@ -2,14 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 interface AuthSubmitButtonProps {
-  authType: "SIGN_IN" | "SIGN_UP" | "RESET";
+  authType: "SIGN_IN" | "SIGN_UP" | "RESET" | "FORGOT";
   isPending: boolean;
 }
 
 const buttonText = {
   SIGN_IN: "Sign In",
   SIGN_UP: "Sign Up",
-  RESET: "Reset Password",
+  FORGOT: "Reset Password",
+  RESET: "Change Password",
 };
 
 export default function AuthSubmitButton({ authType, isPending }: AuthSubmitButtonProps) {

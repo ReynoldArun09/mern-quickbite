@@ -3,6 +3,8 @@ export const AUTH_ROUTES = {
   SIGN_IN: "/signin",
   SIGN_OUT: "/signout",
   VERIFY_USER: "/verify",
+  FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password/:token",
 };
 
 export const PRODUCT_ROUTES = {
@@ -27,6 +29,7 @@ export const ADMIN_ROUTES = {
   DELETE_PRODUCT: "/delete/:productId",
   DELETE_CUSTOMER: "/user-delete/:userId",
   BLOCK_UNBLOCK_USER: "/block-unblock-user/:userId",
+  CREATE_PRODUCT: "/create-product",
 };
 
 export const PAYMENT_ROUTES = {

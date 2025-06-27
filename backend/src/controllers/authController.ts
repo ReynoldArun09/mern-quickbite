@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import { ParsedEnvVariables } from "../configs";
 import { ApiSuccessMessages, HttpStatusCode } from "../constants";
-import { signInService, signUpService } from "../services/authServices";
+import { forgotPasswordService, resetPasswordService, signInService, signUpService } from "../services/authServices";
 import { customAsyncWrapper, sendApiResponse } from "../utils";
-import { signInSchema, signUpSchema } from "../validations";
+import { emailSchema, passwordSchema, resetTokenSchema, signInSchema, signUpSchema } from "../validations";
 
 /**
  * Handles the request to signup user.
@@ -102,5 +102,30 @@ export const verifyController = customAsyncWrapper(async (request: Request, resp
     response,
     statusCode: HttpStatusCode.OK,
     data: user,
+  });
+});
+
+export const forgotPasswordController = customAsyncWrapper(async (request: Request, response: Response) => {
+  const { email } = emailSchema.parse(request.body);
+
+  await forgotPasswordService(email);
+
+  sendApiResponse({
+    response,
+    statusCode: HttpStatusCode.OK,
+    message: ApiSuccessMessages.PASSWORD_RESET_SENT,
+  });
+});
+
+export const resetPasswordController = customAsyncWrapper(async (request: Request, response: Response) => {
+  const { token } = resetTokenSchema.parse(request.params);
+  const { password } = passwordSchema.parse(request.body);
+
+  await resetPasswordService(token, password);
+
+  sendApiResponse({
+    response,
+    statusCode: HttpStatusCode.OK,
+    message: ApiSuccessMessages.PASSWORD_RESET_SUCCESS,
   });
 });

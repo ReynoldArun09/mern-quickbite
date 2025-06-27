@@ -8,4 +8,6 @@ export enum ApiSuccessMessages {
   USER_UNBLOCKED = "User unblocked successfully. ✅",
   PRODUCT_ENABLED = "Product enabled successfully. ✅",
   PRODUCT_DISABLED = "Product disabled successfully. 🚫",
+  PASSWORD_RESET_SENT = "Password reset link has sent your email address.",
+  PASSWORD_RESET_SUCCESS = "Password reset succesfully. You can login now.",
 }

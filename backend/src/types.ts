@@ -21,6 +21,8 @@ export type UserType = {
   mobile: string;
   role: userRole;
   blocked: boolean;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiresAt?: Date | null;
 };
 
 export type UserContextType = Omit<UserType, "password"> & {

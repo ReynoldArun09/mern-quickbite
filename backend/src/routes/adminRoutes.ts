@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as admin from "../controllers/adminController";
 import { authMiddleware, isAdminMiddleware, ValidateObjectParamId } from "../middlewares";
+import { upload } from "../utils";
 import { ADMIN_ROUTES } from "./routeConstants";
 
 const adminRoutes = Router();
@@ -35,5 +36,7 @@ adminRoutes.put(
   isAdminMiddleware,
   admin.blockUnBlockUser
 );
+
+adminRoutes.post(ADMIN_ROUTES.CREATE_PRODUCT, upload.single("imageFile"), admin.createProduct);
 
 export default adminRoutes;

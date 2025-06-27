@@ -1,27 +1,36 @@
 import SiteLogo from "@/components/common/site-logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { RESET_DES, RESET_TITLE, SIGN_IN_DES, SIGN_IN_TITLE, SIGN_UP_TITLE } from "@/constants/auth-data";
+import {
+  FORGOT_DES,
+  FORGOT_TITLE,
+  RESET_DES,
+  RESET_TITLE,
+  SIGN_IN_DES,
+  SIGN_IN_TITLE,
+  SIGN_UP_TITLE,
+} from "@/constants/auth-data";
 import { Link } from "react-router-dom";
 
 interface AuthWrapperProps {
   children: React.ReactNode;
-  authType: "SIGN_IN" | "SIGN_UP" | "RESET";
+  authType: "SIGN_IN" | "SIGN_UP" | "RESET" | "FORGOT";
 }
 
 export default function AuthWrapper({ children, authType }: AuthWrapperProps) {
   const isSignIn = authType === "SIGN_IN";
   const isSignUp = authType === "SIGN_UP";
+  const isForgot = authType === "FORGOT";
 
-  const title = isSignIn ? SIGN_IN_TITLE : isSignUp ? SIGN_UP_TITLE : RESET_TITLE;
-  const description = isSignIn ? SIGN_IN_DES : isSignUp ? SIGN_IN_DES : RESET_DES;
+  const title = isSignIn ? SIGN_IN_TITLE : isSignUp ? SIGN_UP_TITLE : isForgot ? FORGOT_TITLE : RESET_TITLE;
+  const description = isSignIn ? SIGN_IN_DES : isSignUp ? SIGN_IN_DES : isForgot ? FORGOT_DES : RESET_DES;
 
   const footerText = isSignIn ? "Don't have an account?" : isSignUp ? "Already have an account?" : "";
   const footerLink = isSignIn ? { text: "Sign up", to: "/auth/sign-up" } : { text: "Sign In", to: "/auth/sign-in" };
 
   return (
     <Card className="w-full max-w-md shadow-xl">
-      <CardHeader className="items-center text-center">
+      <CardHeader className="items-center text-start space-y-2">
         <SiteLogo />
         <CardTitle className="text-2xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

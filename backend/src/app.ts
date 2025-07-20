@@ -15,6 +15,7 @@ const app: Application = express();
 const base_url = "/api/v1";
 
 /** Middlewares */
+app.set('trust proxy', true);
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(compression());

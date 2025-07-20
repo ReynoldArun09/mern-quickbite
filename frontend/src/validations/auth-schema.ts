@@ -12,7 +12,7 @@ export const signUpSchema = z.object({
   lastname: z
     .string({ required_error: "Lastname is required" })
     .min(4, { message: "Lastname must be 4 or more characters long" }),
-  mobile: z.string({ required_error: "Mobile number is required" }).min(10, { message: "Mobile number must be Valid" }),
+   mobile: z.string().regex(/^\+91\d{10}$/, "Mobile number must start with +91 and be followed by exactly 10 digits."),
 });
 
 export const signInSchema = z.object({

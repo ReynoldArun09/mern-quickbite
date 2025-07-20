@@ -4,7 +4,7 @@ QuickBite is a modern food ordering platform built with the **MERN stack** (Mong
 
 ## 🔗 Links
 
-- **Live Demo:**
+- **Live Demo:** https://quickbite-mern-stack.netlify.app/
 - **Source Code:** [GitHub Repository](https://github.com/ReynoldArun09/mern-quickbite)
 
 ## 🌟 Features

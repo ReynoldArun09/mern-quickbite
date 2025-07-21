@@ -30,7 +30,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    container_name: quickbite-backendd
+    container_name: quickbite-frontend
     restart: always
     depends_on:
       - backend
